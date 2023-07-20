@@ -25,3 +25,18 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+/* load in the custom font */
+@font-face {
+  font-family: 'Gotham';
+  font-style: 'normal';
+  font-weight: 400;
+  src: url(/fonts/GothamMedium.ttf) format('truetype');
+}
+
+/* apply the custom font throughout the entire application */
+@layer base {
+  html {
+    @apply font-sans;
+  }
+}
