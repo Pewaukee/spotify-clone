@@ -33,3 +33,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# prettier config file
+.prettierrc
+
+# extra gotham fonts
+/extra_fonts

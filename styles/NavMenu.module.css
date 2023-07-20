@@ -1,0 +1,4 @@
+/* for conditionally checking based on state of parent container */
+[data-state='open'] > .CaretDown {
+  transform: rotate(-180deg);
+}

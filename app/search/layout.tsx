@@ -1,9 +1,8 @@
-import './globals.css';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Spofity Clone',
-  description: 'A clone of the popluar music streaming service.',
+  title: 'Search - Spofity Clone',
+  description: 'Searching for music and other content.',
 };
 
 export default function RootLayout({
