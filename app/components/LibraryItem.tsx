@@ -24,25 +24,26 @@ export default function LibraryItem({
             src={image.src}  
             alt={image.alt}
             fill={true}
+            sizes='(min-width: 68) 100vw'
             className='rounded-lg'
             />
         </AspectRatio.Root>
       </div>
-      <div className='text-sm grid grid-rows-2 flex justify-center items-center ml-4 mr-4'>
+      <div className='text-[10px] lg:text-sm grid grid-rows-2 flex justify-center items-center ml-2 mr-2'>
         <div>
           <h1>{name}</h1>
         </div>
         <div className='grid grid-cols-2 flex justify-content items-center'>
-          <p className='flex justify-content items-center text-[10px] text-gray-400 opactity-50'>
-            {type}
+          <div className='flex justify-content items-center text-gray-400 opactity-50'>
+            <p className='text-[6px] md:text-[8px] lg:text-[10px]'>{type}</p>
             <Music
               size={32}
-              strokeWidth={1.5}
-              className='ml-[5px]'
+              strokeWidth={2}
+              className='ml-0 lg:ml-[2px]'
             />
-          </p>{' '}
+          </div>
           {/** or other options */}
-          <h2 className='ml-[5px] decoration-solid hover:underline'>{creator}</h2>
+          <h2 className='text-[8px] sm:text-[10px] lg:text-sm ml-0 md:ml-[2px] lg:ml-[5px] decoration-solid hover:underline'>{creator}</h2>
           {/** make this a link to artist or user or something maybe? */}
         </div>
       </div>

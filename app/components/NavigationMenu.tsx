@@ -66,16 +66,24 @@ export default function NavigationMenuItem() {
                   type={'Album'}
                 />
               </NavigationMenu.Link>
-              <NavigationMenu.Link asChild className='mt-6 mb-2'>
+              <NavigationMenu.Link
+                asChild
+                className='mt-6 mb-2 text-xs md:text-sm lg:text-base'
+              >
                 <Link href='/library'>View Library</Link>
               </NavigationMenu.Link>
             </ul>
           </NavigationMenu.Content>
         </NavigationMenu.Item>
+        <NavigationMenu.Indicator
+          className={`flex items-end justify-center h-[10px] top-[100%] overflow-hidden z-10 duration-300 ease-in-out ${styles.NavigationMenuIndicator}`}
+        >
+          <div className='relative top-[70%] w-[10px] h-[10px] rotate-45 rounded-tl-[2px]' />
+        </NavigationMenu.Indicator>
       </NavigationMenu.List>
       <div className='absolute flex justify-center w-full left-0 '>
         <NavigationMenu.Viewport
-          className={`relative origin-center w-full bg-white rounded-xl duration-300 ease-linear ${styles.NavigationMenuViewport}`}
+          className={`relative origin-center w-full rounded-xl duration-300 ease-linear ${styles.NavigationMenuViewport}`}
         />
       </div>
     </NavigationMenu.Root>
