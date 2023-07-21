@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Home, Search } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import { usePathname } from 'next/navigation';
+import SearchPopover from './SearchPopover';
 
 // lazy load the NavigationMenu component, to prevent lots of client code from being rendered as well as server code
 const NavigationMenuItem = dynamic(() => import('./NavigationMenu'), {
@@ -26,7 +27,15 @@ export default function Navbar() {
           href='/'
           className='flex flex-row'
         >
-          <p className={`${isLinkActive('/') ? 'underline underline-offset-4 decoration-2' : ''}`}>Home</p>
+          <p
+            className={`${
+              isLinkActive('/')
+                ? 'underline underline-offset-4 decoration-2'
+                : ''
+            }`}
+          >
+            Home
+          </p>
           <div className='ml-[5px]'>
             <Home />
           </div>
@@ -34,15 +43,7 @@ export default function Navbar() {
       </div>
       {/** search button */}
       <div className='flex justify-center select-none'>
-        <Link
-          href='/search'
-          className='flex flex-row'
-        >
-          <p className={`${isLinkActive('/search') ? 'underline underline-offset-4 decoration-2' : ''}`}>Search</p>
-          <div className='ml-[5px]'>
-            <Search />
-          </div>
-        </Link>
+        <SearchPopover />
       </div>
 
       {/** playlists, dropdown menu */}
@@ -54,4 +55,3 @@ export default function Navbar() {
     </nav>
   );
 }
-
