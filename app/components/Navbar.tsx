@@ -22,7 +22,7 @@ export default function Navbar() {
   return (
     <nav className='h-[100px] w-full grid grid-cols-3 gap-4 text-lg flex justify-center items-center bg-gradient-to-r from-green-400 via-green-500 to-green-400 rounded-b-3xl'>
       {/** Home */}
-      <div className='flex justify-center select-none'>
+      <div className='flex justify-center select-none '>
         <Link
           href='/'
           className='flex flex-row'
