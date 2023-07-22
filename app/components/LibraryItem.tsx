@@ -13,18 +13,6 @@ export default function LibraryItem({
   name: string;
   creator: string;
   type: 'Album' | 'Playlist';
-
-// sample Library to use in developing the frontend
-export default function LibraryItem({
-    image,
-    name,
-    creator,
-    type
-}: {
-    image: { src: string; alt: string };
-    name: string;
-    creator: string;
-    type: 'Album' | 'Playlist'
 }) {
   return (
     <div className='relative w-full h-full grid grid-cols-2 rounded-lg hover:bg-gray-400/25'>
