@@ -13,7 +13,6 @@ export default function LibraryItem({
   name: string;
   creator: string;
   type: 'Album' | 'Playlist';
-=======
 
 // sample Library to use in developing the frontend
 export default function LibraryItem({
