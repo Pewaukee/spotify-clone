@@ -21,15 +21,15 @@ export default function DescriptionText({
         openDelay={100}
       >
         <HoverCard.Trigger asChild>
-          <div className='h-[50px] text-xs text-gray-600 ml-[10%] pt-4 pb-2 mr-[10%]'>
+          <div className='h-[50px] text-xs text-gray-400 ml-[10%] pt-4 pb-2 mr-[10%]'>
             <p className='truncate'>{description}</p>
           </div>
         </HoverCard.Trigger>
         <HoverCard.Portal>
-          <HoverCard.Content className='rounded-lg p-[20px] w-[200px] bg-gray-200 duration-400 will-change-transform z-10'>
+          <HoverCard.Content className='rounded-lg p-[20px] w-[200px] bg-neutral-500 duration-400 will-change-transform z-10'>
             <div>
-              <h2 className='text-sm'>{title}</h2>
-              <p className='text-[10px]'>{description}</p>
+              <h2 className='text-sm text-white'>{title}</h2>
+              <p className='text-[10px] text-white'>{description}</p>
             </div>
 
             <HoverCard.Arrow />
