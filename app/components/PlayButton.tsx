@@ -3,7 +3,7 @@
 import useMusic from '@/hooks/useMusic';
 import Image from 'next/image';
 import React, { useEffect } from 'react';
-import { usePlayer } from '../context/PlayerContext';
+import { Queue, usePlayer } from '../context/PlayerContext';
 
 export default function PlayButton({
   title,
@@ -12,7 +12,7 @@ export default function PlayButton({
   title: string;
   author: string;
 }) {
-  const { queue, setQueue, clearQueue} = usePlayer();
+  const { queue, setQueue, clearQueue } = usePlayer();
   const { data, loading, error, fetchMusic } = useMusic();
 
   const handleClick = async () => {
@@ -25,7 +25,29 @@ export default function PlayButton({
   useEffect(() => {
     if (data) {
       clearQueue();
-      setQueue(data);
+      
+      // construct the new list based on the following type sig
+      /**
+       * type Song = {
+       * title: string;
+       * preview: string;
+       * image_src: string;
+       * artist: string;
+       * } | null;
+       */
+      const newQueue: Queue = [];
+      const image_src = data.albumCover;
+      const artist = data.artistName;
+      data.mp3Previews.forEach((track) => {
+        newQueue.push({
+          title: track.title,
+          preview: track.preview,
+          image_src: image_src,
+          artist: artist,
+        });
+      });
+
+      setQueue(newQueue);
     }
   }, [data]);
 
