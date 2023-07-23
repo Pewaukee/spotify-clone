@@ -21,11 +21,7 @@ export default function Home() {
               title='Swimming'
               description='Mac Miller'
             />
-            <Player
-              image={{ src: '/swimming.png', alt: 'swimming' }}
-              title='Swimming'
-              artist='Mac Miller'
-            />
+            <Player />
           </PlayerProvider>
         </div>
       </div>
