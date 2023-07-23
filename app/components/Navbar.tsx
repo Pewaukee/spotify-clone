@@ -20,7 +20,7 @@ export default function Navbar() {
   const isLinkActive = (path: string) => pathname === path;
 
   return (
-    <nav className='h-[100px] w-full grid grid-cols-3 gap-4 flex justify-center items-center bg-gradient-to-r from-green-400 via-green-500 to-green-400 rounded-b-3xl'>
+    <nav className='h-[100px] w-full grid grid-cols-3 gap-4 text-lg flex justify-center items-center bg-gradient-to-r from-green-400 via-green-500 to-green-400 rounded-b-3xl'>
       {/** Home */}
       <div className='flex justify-center select-none '>
         <Link

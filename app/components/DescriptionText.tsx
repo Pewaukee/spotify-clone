@@ -21,7 +21,7 @@ export default function DescriptionText({
         openDelay={100}
       >
         <HoverCard.Trigger asChild>
-          <div className='h-[50px] text-xs text-gray-600 ml-2 pt-4 pb-2 mr-2'>
+          <div className='h-[50px] text-xs text-gray-600 ml-[10%] pt-4 pb-2 mr-[10%]'>
             <p className='truncate'>{description}</p>
           </div>
         </HoverCard.Trigger>
