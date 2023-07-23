@@ -1,16 +1,15 @@
 'use client';
 import * as Slider from '@radix-ui/react-slider';
 import { Volume, Volume1, Volume2, VolumeX } from 'lucide-react';
-import React, { useState } from 'react';
+import React from 'react';
+
+import { usePlayer } from '../context/PlayerContext';
 
 export default function VolumeSlider() {
-  const [volume, setVolume] = useState([50]);
 
-  const handleValueChange = (newVolume: number[]) => {
-    setVolume(newVolume);
-  };
+  const { volume, setVolume } = usePlayer();
 
-  const renderVolumeIcon = (volume: number[]) => {
+  const renderVolumeIcon = () => {
     if (volume[0] === 0) {
       return <VolumeX />;
     } else if (volume[0] < 30) {
@@ -24,7 +23,7 @@ export default function VolumeSlider() {
   return (
     <div className='flex flex-row justify-center items-center'>
         <div className='mr-2'>
-        {renderVolumeIcon(volume)}
+        {renderVolumeIcon()}
         </div>
       
       <form>
@@ -33,7 +32,7 @@ export default function VolumeSlider() {
           defaultValue={[50]}
           max={100}
           step={1}
-          onValueChange={handleValueChange}
+          onValueChange={(e) => setVolume(e)}
         >
           <Slider.Track className='relative grow rounded-full h-[3px] bg-gray-400'>
             <Slider.Range className='absolute bg-white rounded-full h-full group-hover/volume:bg-green-400' />
