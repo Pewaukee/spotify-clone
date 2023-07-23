@@ -1,6 +1,6 @@
 export default function TermsOfUse() {
   return (
-    <div>
+    <div className='text-white'>
       <h1>Terms of Use</h1>
       <p>Welcome to Spotify Clone!</p>
       <p>
@@ -37,16 +37,16 @@ export default function TermsOfUse() {
               <p>
                 Spotify Clone and its content, including but not limited to
                 text, images, graphics, logos, and software, are the property of
-                Spotify Clone llc and are protected by copyright and other
+                Karthik (github user Pewaukee) and are protected by copyright and other
                 intellectual property laws. You may not reproduce, distribute,
                 or use any content from Spotify Clone without express written
-                permission from Spotify Clone llc.
+                permission from Karthik (github user Pewaukee).
               </p>
             </li>
             <li>
               <p>
                 Any user-generated content you submit or upload to Spotify Clone
-                becomes the property of Spotify Clone llc, and you grant Spotify
+                becomes the property of Karthik (github user Pewaukee), and you grant Spotify
                 Clone llc a non-exclusive, worldwide, royalty-free license to
                 use, reproduce, modify, adapt, publish, translate, and
                 distribute the content for any purpose.
@@ -59,15 +59,15 @@ export default function TermsOfUse() {
           <ul className='list-disc pl-12'>
             <li>
               <p>
-                Spotify Clone llc makes no warranties or representations about
-                the accuracy or completeness of Spotify Clone&apos;s content. The
-                application is provided on an &quot;as-is&quot; basis without any
-                warranties of any kind.
+                Karthik (github user Pewaukee) makes no warranties or representations about
+                the accuracy or completeness of Spotify Clone&apos;s content.
+                The application is provided on an &quot;as-is&quot; basis
+                without any warranties of any kind.
               </p>
             </li>
             <li>
               <p>
-                Spotify Clone llc disclaims all warranties, express or implied,
+                Karthik (github user Pewaukee) disclaims all warranties, express or implied,
                 including but not limited to implied warranties of
                 merchantability, fitness for a particular purpose, and
                 non-infringement.
@@ -80,7 +80,7 @@ export default function TermsOfUse() {
           <ul className='list-disc pl-12'>
             <li>
               <p>
-                Spotify Clone llc will not be liable for any damages, direct or
+                Karthik (github user Pewaukee) will not be liable for any damages, direct or
                 indirect, arising from the use of Spotify Clone, including but
                 not limited to damages for lost profits, data loss, or business
                 interruption.
@@ -93,7 +93,7 @@ export default function TermsOfUse() {
           <ul className='list-disc pl-12'>
             <li>
               <p>
-                You agree to indemnify and hold harmless Spotify Clone llc and
+                You agree to indemnify and hold harmless Karthik (github user Pewaukee) and
                 its employees, officers, directors, and affiliates from any
                 claims, damages, losses, liabilities, and expenses (including
                 legal fees) arising out of or related to your use of Spotify
@@ -106,7 +106,7 @@ export default function TermsOfUse() {
           <h1 className='font-bold'>Modifictation and Termination</h1>
           <ul className='list-disc pl-12'>
             <p>
-              Spotify Clone llc reserves the right to modify or terminate
+              Karthik (github user Pewaukee) reserves the right to modify or terminate
               Spotify Clone or these Terms of Use at any time, with or without
               notice. Continued use of the application after any modifications
               constitute acceptance of the updated Terms of Use.

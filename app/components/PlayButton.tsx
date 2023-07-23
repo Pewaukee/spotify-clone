@@ -2,7 +2,7 @@
 
 import useMusic from '@/hooks/useMusic';
 import Image from 'next/image';
-import React, { useState } from 'react';
+import React from 'react';
 
 export default function PlayButton({
   title,
