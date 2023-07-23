@@ -1,3 +1,4 @@
+'use client';
 import { LinearProgress } from '@mui/material';
 import {
   FastForward,
@@ -14,6 +15,9 @@ import {
 } from 'lucide-react';
 import Image from 'next/image';
 import VolumeSlider from './VolumeSlider';
+import MusicFiles from './MusicFiles';
+import { usePlayer } from '../context/PlayerContext';
+import { useEffect } from 'react';
 
 export default function Player({
   image,
@@ -27,6 +31,22 @@ export default function Player({
   title: string;
   artist: string;
 }) {
+  const { queue, volume } = usePlayer();
+
+  useEffect(() => {
+    setVolumeofAudio();
+  }, [volume]);
+
+  const setVolumeofAudio = () => {
+    if (queue.length === 0) return;
+
+    try {
+      (document.getElementById('music') as HTMLAudioElement).volume =
+        volume[0] / 100;
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div className='absolute h-[70px] inset-x-0 bottom-0 bg-black z-30'>
       <div className='grid grid-cols-3'>
@@ -50,16 +70,31 @@ export default function Player({
         <div className='flex flex-col'>
           <div className='flex justify-center items-center mt-4'>
             <div className='flex flex-row'>
-                <Shuffle size={20} className='hover:text-gray-300'/>
-                <Rewind size={20} className='ml-2 hover:text-gray-300'/>
-                {/** add conditional in the future */}
-                <Play size={20} className='ml-2 hover:scale-110 hover:text-gray-300'/>
+              <Shuffle
+                size={20}
+                className='hover:text-gray-300'
+              />
+              <Rewind
+                size={20}
+                className='ml-2 hover:text-gray-300'
+              />
+              {/** add conditional in the future */}
+              <Play
+                size={20}
+                className='ml-2 hover:scale-110 hover:text-gray-300'
+              />
 
-                {/* <Pause /> */}
-                <FastForward size={20} className='ml-2 hover:text-gray-300'/>
-                <Repeat size={20} className='ml-2 hover:text-gray-300'/>
-                {/** conditional */}
-                {/* <Repeat1 /> */}
+              {/* <Pause /> */}
+              <FastForward
+                size={20}
+                className='ml-2 hover:text-gray-300'
+              />
+              <Repeat
+                size={20}
+                className='ml-2 hover:text-gray-300'
+              />
+              {/** conditional */}
+              {/* <Repeat1 /> */}
             </div>
           </div>
 
@@ -75,6 +110,8 @@ export default function Player({
         </div>
         <VolumeSlider />
       </div>
+      {/** add the music */}
+      <MusicFiles />
     </div>
   );
 }

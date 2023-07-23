@@ -1,5 +1,6 @@
 import Player from './components/Player';
 import PlaylistCard from './components/PlaylistCard';
+import PlayerProvider from './context/PlayerContext';
 
 export default function Home() {
   return (
@@ -9,17 +10,23 @@ export default function Home() {
       </div>
       <div className='w-full'>
         <div className='ml-24 mt-8'>
-          <PlaylistCard
-            image={{ src: '/immunity.png', alt: 'Immunity Album Cover' }}
-            title='Immunity'
-            description='Clairo'
-          />
-          <PlaylistCard
-            image={{ src: '/swimming.png', alt: 'Swimming Album Cover' }}
-            title='Swimming'
-            description='Mac Miller'
-          />
-          <Player image={{src: '/swimming.png', alt: 'swimming'}} title='Swimming' artist='Mac Miller' />
+          <PlayerProvider>
+            <PlaylistCard
+              image={{ src: '/immunity.png', alt: 'Immunity Album Cover' }}
+              title='Immunity'
+              description='Clairo'
+            />
+            <PlaylistCard
+              image={{ src: '/swimming.png', alt: 'Swimming Album Cover' }}
+              title='Swimming'
+              description='Mac Miller'
+            />
+            <Player
+              image={{ src: '/swimming.png', alt: 'swimming' }}
+              title='Swimming'
+              artist='Mac Miller'
+            />
+          </PlayerProvider>
         </div>
       </div>
     </main>
