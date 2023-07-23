@@ -2,7 +2,14 @@ import { useState } from 'react';
 import axios from 'axios';
 
 export default function useMusic() {
-  const [data, setData] = useState<string[] | null>(null);
+  const [data, setData] = useState<{
+    albumCover: string;
+    mp3Previews: {
+      title: string;
+      preview: string;
+    }[];
+    artistName: string;
+  } | null>(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
