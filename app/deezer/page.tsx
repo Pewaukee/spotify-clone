@@ -60,8 +60,8 @@ export default function TermsOfUse() {
             <li>
               <p>
                 Spotify Clone llc makes no warranties or representations about
-                the accuracy or completeness of Spotify Clone's content. The
-                application is provided on an "as-is" basis without any
+                the accuracy or completeness of Spotify Clone&apos;s content. The
+                application is provided on an &quot;as-is&quot; basis without any
                 warranties of any kind.
               </p>
             </li>
