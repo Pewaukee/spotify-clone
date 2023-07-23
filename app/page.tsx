@@ -1,10 +1,11 @@
+import Player from './components/Player';
 import PlaylistCard from './components/PlaylistCard';
 
 export default function Home() {
   return (
-    <main className='w-full min-h-screen bg-green-100/25'>
+    <main className='w-full h-full bg-neutral-700 max-h-screen'>
       <div className='mt-10 ml-10 text-2xl'>
-        <h1>Focus</h1>
+        <h1>Pewaukee&apos;s favorite tracks</h1>
       </div>
       <div className='w-full'>
         <div className='ml-24 mt-8'>
@@ -18,7 +19,7 @@ export default function Home() {
             title='Swimming'
             description='Mac Miller'
           />
-          
+          <Player image={{src: '/swimming.png', alt: 'swimming'}} title='Swimming' artist='Mac Miller' />
         </div>
       </div>
     </main>
