@@ -11,11 +11,10 @@ export default function PlaylistCard({
   title: string;
   description: string;
 }) {
-
   return (
     <div className='relative inline-block w-[15%] rounded-xl bg-gray-700/25 ease-in-out duration-300 group/play hover:bg-gray-500/50 mr-12'>
       <div className='opacity-0 duration-300 ease-in-out group-hover/play:opacity-100'>
-        <PlayButton />
+        <PlayButton title={title} author={description}/>
       </div>
 
       <div className='grid-rows-3 rounded-xl   '>
@@ -36,7 +35,10 @@ export default function PlaylistCard({
           </h2>
         </div>
 
-        <DescriptionText title={title} description={description} />
+        <DescriptionText
+          title={title}
+          description={description}
+        />
       </div>
     </div>
   );
