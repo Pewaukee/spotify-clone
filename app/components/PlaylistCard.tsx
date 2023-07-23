@@ -13,9 +13,10 @@ export default function PlaylistCard({
 }) {
   return (
     <div className='relative inline-block w-[15%] rounded-xl bg-gray-700/25 ease-in-out duration-300 group/play hover:bg-gray-500/50 mr-12'>
-      <div className='opacity-0 absolute top-[45%] left-[60%] brightness-110 w-[40%] h-[40%] duration-300 ease-in-out group-hover/play:opacity-100 group-hover/play:-translate-y-4'>
 
-        <PlayButton />
+      <div className='opacity-0 duration-300 ease-in-out group-hover/play:opacity-100'>
+        <PlayButton title={title} author={description}/>
+
       </div>
 
       <div className='grid-rows-3 rounded-xl   '>

@@ -9,30 +9,16 @@ export default function Home() {
       <div className='w-full'>
         <div className='ml-24 mt-8'>
           <PlaylistCard
-            image={{ src: '/piano.png', alt: 'Piano Playlist Cover' }}
-            title='Peaceful Piano'
-            description='Peaceful piano to help you relax and focus on your work.'
+            image={{ src: '/immunity.png', alt: 'Immunity Album Cover' }}
+            title='Immunity'
+            description='Clairo'
           />
           <PlaylistCard
-            image={{ src: '/piano.png', alt: 'Piano Playlist Cover' }}
-            title='Peaceful Piano'
-            description='Peaceful piano to help you relax and focus on your work.'
+            image={{ src: '/swimming.png', alt: 'Swimming Album Cover' }}
+            title='Swimming'
+            description='Mac Miller'
           />
-          <PlaylistCard
-            image={{ src: '/piano.png', alt: 'Piano Playlist Cover' }}
-            title='Peaceful Piano'
-            description='Peaceful piano to help you relax and focus on your work.'
-          />
-          <PlaylistCard
-            image={{ src: '/piano.png', alt: 'Piano Playlist Cover' }}
-            title='Peaceful Piano'
-            description='Peaceful piano to help you relax and focus on your work.'
-          />
-          <PlaylistCard
-            image={{ src: '/piano.png', alt: 'Piano Playlist Cover' }}
-            title='Peaceful Piano'
-            description='Peaceful piano to help you relax and focus on your work.'
-          />
+          
         </div>
       </div>
     </main>
