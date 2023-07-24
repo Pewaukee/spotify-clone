@@ -49,7 +49,7 @@ export default function PlayButton({
 
       setQueue(newQueue);
     }
-  }, [data]);
+  }, [data, clearQueue, setQueue]);
 
   return (
     <div className='absolute top-[35%] left-[60%] brightness-110'>
