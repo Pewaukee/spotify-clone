@@ -5,7 +5,7 @@ import Image from 'next/image';
 import VolumeSlider from './VolumeSlider';
 import MusicFiles from './MusicFiles';
 import { usePlayer } from '../context/PlayerContext';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import PlayPause from './PlayPause';
 
 export default function Player() {
@@ -14,60 +14,57 @@ export default function Player() {
   // keep track of the position in the queue
   const [index, setIndex] = useState<number>(0);
 
-  const getAudioFile = (): HTMLAudioElement =>
-    document.getElementById(`audio-file-${index}`) as HTMLAudioElement;
+  // get the audio file by the corresponding index
+  // by searching for the UNIQUE id of the audio file
+  const getAudioFile = useCallback(
+    (): HTMLAudioElement | null => {
+      if (queue.length === 0) return null;
+      //TODO: include an index check later
+      try {
+        return document.getElementById(`audio-file-${index}`) as HTMLAudioElement
+      } catch (error) {
+        throw new Error('could not find the audio file');
+      }
+    }, [index, queue.length]
+  );
 
-  const setVolumeofAudio = () => {
-    if (queue.length === 0) return;
+  // set the volume attribute of the <audio> element
+  const setVolumeofAudio = useCallback(() => {
+    const audioFile = getAudioFile();
+    if (audioFile) audioFile.volume = volume[0] / 200; // customizable scalar
+  }, [volume, getAudioFile]);
 
-    try {
-      const audioFile = getAudioFile();
-      audioFile.volume = volume[0] / 200;
-    } catch (error) {
-      console.log('Error setting volume of audio files');
-    }
-  };
+  // either pause or play the current <audio> element
+  const setPauseofAudio = useCallback(() => {
+    const audioFile = getAudioFile();
+    if (audioFile) pause ? audioFile.play() : audioFile.pause();
+  }, [pause, getAudioFile]);
 
-  const setPauseofAudio = () => {
-    if (queue.length === 0) return;
-
-    try {
-      const audioFile = getAudioFile();
-      pause ? audioFile.play() : audioFile.pause();
-    } catch (error) {
-      throw new Error('could not find the audio file to pause');
-    }
-  };
-
+  // get the amount of time that has passed in the current <audio> element
   const getCurrentTime = (): number => {
-    try {
-      const audioFile = getAudioFile();
-      return Math.round((audioFile.currentTime / audioFile.duration) * 30);
-    } catch (error: any) {
-      return 0;
-    }
+    const audioFile = getAudioFile();
+    if (audioFile) return Math.round(audioFile.currentTime);
+    else return 0;
   };
 
+  // convert the time to a time-readable string
   const timeString = (time: number): string =>
     `0:${time < 10 ? `0${time}` : time}`;
 
+  // check the status of the current <audio> element
+  // if it has ended, then load the next song
   const checkStatusOfAudio = () => {
-    if (queue.length === 0) return;
-
-    try {
-      const audioFile = getAudioFile();
-      if (audioFile.ended) {
-        // pause the current song to make sure it stops
-        audioFile.pause();
-        // then load the next song by triggering the re-render and the useEffect hook
-        setIndex(index + 1);
-      }
-    } catch (error) {
-      console.log(error);
+    const audioFile = getAudioFile();
+    if (audioFile && audioFile.ended) {
+      // pause the current song to make sure it stops
+      audioFile.pause();
+      // then load the next song by triggering the re-render and the useEffect hook
+      setIndex(index + 1);
     }
   };
 
   useEffect(() => {
+    if (queue.length === 0) return setCurrentSong(null);
     // on a change of index, run the following code
     setCurrentSong(queue[index]);
     setCurrentTime(0);
@@ -75,20 +72,16 @@ export default function Player() {
     setVolumeofAudio();
     // play the next song
     setPauseofAudio();
-  }, [index]);
+  }, [index, queue, setCurrentSong, setPauseofAudio, setVolumeofAudio]);
 
   useEffect(() => {
+    // set the volume if the volume changes
     setVolumeofAudio();
-  }, [volume, queue]);
-
-  useEffect(() => {
-    if (queue.length === 0) return setCurrentSong(null);
-    setCurrentSong(queue[index]);
-  }, [queue]);
+  }, [volume, queue, setVolumeofAudio]);
 
   useEffect(() => {
     setPauseofAudio();
-  }, [pause]);
+  }, [pause, setPauseofAudio]);
 
   useEffect(() => {
     const interval = setInterval(() => {
