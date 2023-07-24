@@ -12,6 +12,7 @@ export default function useMusic() {
   } | null>(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
   const fetchMusic = async ({
     title,
@@ -21,7 +22,6 @@ export default function useMusic() {
     artist: string;
   }) => {
     setLoading(true);
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL;
     try {
         const response = await axios.get(`${baseUrl}/api/music/music`, {
             params: {
