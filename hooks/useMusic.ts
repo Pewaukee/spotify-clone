@@ -21,8 +21,9 @@ export default function useMusic() {
     artist: string;
   }) => {
     setLoading(true);
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL;
     try {
-        const response = await axios.get('http://localhost:3000/api/music/music', {
+        const response = await axios.get(`${baseUrl}/api/music/music`, {
             params: {
                 title,
                 artist,
