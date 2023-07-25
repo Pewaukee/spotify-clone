@@ -15,20 +15,23 @@ import FastForwardButton from './ControlButtons/FastForwardButton';
 import RewindButton from './ControlButtons/RewindButton';
 import ShuffleButton from './ControlButtons/ShuffleButton';
 import RepeatButton from './ControlButtons/RepeatButton';
-import { shuffleList } from '@/utils/shuffle';
+import { shuffleIndices } from '@/utils/shuffle';
+import useMusic from '@/hooks/useMusic';
 
 export default function Player() {
   // import context variables
   const { queue, volume, pause, currentSong, setCurrentSong, shuffle, repeat } =
     usePlayer();
+  // use loading from api hook
+  const { loading } = useMusic();
   // time state for the slider
   const [time, setTime] = useState<number>(0);
   // keep track of the position in the queue
-  const [index, setIndex] = useState<number>(0);
+  const [index, setIndex] = useState<number>(-1);
   // keep track of the current <audio> element
   const [audioFile, setAudioFile] = useState<HTMLAudioElement | null>(null);
-
-  //TODO: just need random indexes, not a random queue
+  // keep track of the random indices for shuffle  
+  const [randomIndices, setRandomIndices] = useState<number[]>([]);
 
   // event listener for when the song ends
   const audioEnded = useCallback((): void => {
@@ -40,13 +43,16 @@ export default function Player() {
       }
     }
     // otherwise, increment the index
-    else if (audioFile) setIndex(index + 1);
-  }, [index, setIndex, audioFile]);
+    else if (audioFile)
+      setIndex(
+        shuffle ? randomIndices[randomIndices.indexOf(index) + 1] : index + 1
+      );
+  }, [index, setIndex, audioFile, shuffle, randomIndices, repeat]);
 
   // get the amount of time that has passed in the current <audio> element
   const getCurrentTime = useCallback((): void => {
     audioFile ? setTime(Math.round(audioFile.currentTime)) : setTime(0);
-  }, [audioFile]);
+  }, [audioFile, setTime]);
 
   // get the audio file by the corresponding index
   // by searching for the UNIQUE id of the audio file
@@ -57,11 +63,11 @@ export default function Player() {
           null
       );
     } else setAudioFile(null);
-  }, [index, currentSong]);
+  }, [currentSong, setAudioFile]);
 
   // set the volume attribute of the <audio> element
   const setVolumeofAudio = useCallback(() => {
-    if (audioFile) audioFile.volume = volume[0] / 200; // customizable scalar
+    if (audioFile) audioFile.volume = volume[0] / 1000; // customizable scalar
   }, [volume, audioFile]);
 
   // call the pause or play funciton on the current <audio> element
@@ -69,12 +75,27 @@ export default function Player() {
     if (audioFile) pause ? audioFile.play() : audioFile.pause();
   }, [pause, audioFile]);
 
+  const updateShuffle = useCallback(() => {
+    if (queue.length > 0) {
+      setRandomIndices(() => {
+        const newRandomIndices = shuffleIndices(queue.length);
+        setIndex(shuffle ? newRandomIndices[0] : 0);
+        return newRandomIndices;
+      });
+      // setRandomIndices(shuffleIndices(queue.length));
+      // setIndex(shuffle ? randomIndices[0] : 0);
+    }
+  }, [queue, setRandomIndices, setIndex]);
+
+  useEffect(() => {
+    updateShuffle();
+  }, [JSON.stringify(queue), setRandomIndices, updateShuffle]); // useEffect with lists runs infinitely, so use JSON.stringify
+
   /**
    * for the queue and index, we only need to update the following:
    * the current song, and the current time
    */
   useEffect(() => {
-    console.log(queue)
     // pause the current audio and rewind to the start, helps with fast forward and rewind
     if (audioFile) {
       audioFile.pause();
@@ -87,21 +108,19 @@ export default function Player() {
       if (repeat === RepeatMode.NONE) {
         setTime(0);
         setCurrentSong(null);
-      }
-      else if (repeat === RepeatMode.REPEAT_ALL) {
+      } else if (repeat === RepeatMode.REPEAT_ALL) {
         setIndex(0);
-      }  
+      }
       // return here so that the useEffect runs again
       // for setIndex or currentSong doesn't get overwritten
-      return;    
+      return;
     }
     // set the new current song object based on shuffle or not
     setCurrentSong(queue[index]);
-  }, [JSON.stringify(queue), index]); // useEffect with lists runs infinitely, so use JSON.stringify
+  }, [index]);
 
   // if the current song changes, only then get the audio file
   useEffect(() => {
-    console.log('current song changed', currentSong)
     // set the current audio element
     getAudioFile();
   }, [currentSong, getAudioFile]);
@@ -109,7 +128,6 @@ export default function Player() {
   // event that adds event listeners to the <audio> element
   // only when the audioFile changes
   useEffect(() => {
-    console.log('audio file changed', audioFile)
     // add the event listeners when the component mounts
     if (audioFile) {
       // should independently add event listeners to each <audio> element
@@ -171,7 +189,7 @@ export default function Player() {
                 variant='rectangular'
                 width={50}
                 height={50}
-                animation={false}
+                animation={loading ? 'pulse' : false}
                 className='rounded-md ml-4 mt-[10px] mb-[10px] bg-gray-600'
               />
               <div className='flex flex-col ml-2 justify-center'>
@@ -179,14 +197,14 @@ export default function Player() {
                   variant='text'
                   width={100}
                   height={20}
-                  animation={false}
+                  animation={loading ? 'pulse' : false}
                   className='rounded-md ml-2 bg-gray-600'
                 />
                 <Skeleton
                   variant='text'
                   width={80}
                   height={20}
-                  animation={false}
+                  animation={loading ? 'pulse' : false}
                   className='rounded-md ml-2 bg-gray-600'
                 />
               </div>
@@ -203,12 +221,14 @@ export default function Player() {
                 index={index}
                 setIndex={setIndex}
                 audioFile={audioFile}
+                randomIndices={randomIndices}
               />
               <PlayPause />
               <FastForwardButton
                 index={index}
                 setIndex={setIndex}
                 audioFile={audioFile}
+                randomIndices={randomIndices}
               />
               <RepeatButton />
             </div>
