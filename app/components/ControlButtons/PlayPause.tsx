@@ -1,5 +1,5 @@
 import { Pause, Play } from 'lucide-react';
-import { usePlayer } from '../context/PlayerContext';
+import { usePlayer } from '../../context/PlayerContext';
 
 export default function PlayPause() {
   const { pause, setPause } = usePlayer();

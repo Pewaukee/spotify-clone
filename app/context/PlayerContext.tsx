@@ -24,6 +24,12 @@ type Song = {
 
 export type Queue = Song[]; // queue is a list of songs
 
+export enum RepeatMode {
+  NONE,
+  REPEAT_ONE,
+  REPEAT_ALL,
+}
+
 interface PlayerContextInterface {
   // declare the variables and their types to be used throughout the application
   volume: number[];
@@ -35,6 +41,10 @@ interface PlayerContextInterface {
   setPause: (newPause: boolean) => void;
   currentSong: Song;
   setCurrentSong: (newCurrentSong: Song) => void;
+  shuffle: boolean;
+  setShuffle: (newShuffle: boolean) => void;
+  repeat: RepeatMode;
+  setRepeat: (newRepeat: RepeatMode) => void;
 }
 
 const PlayerContext = createContext<PlayerContextInterface>({
@@ -53,6 +63,10 @@ const PlayerContext = createContext<PlayerContextInterface>({
   setPause: () => {},
   currentSong: null,
   setCurrentSong: () => {},
+  shuffle: false,
+  setShuffle: () => {},
+  repeat: RepeatMode.NONE,
+  setRepeat: () => {},
 });
 
 interface PlayerProviderProps {
@@ -69,6 +83,10 @@ const PlayerProvider: React.FC<PlayerProviderProps> = ({ children }) => {
 
   const [currentSong, setCurrentSong] = useState<Song>(null);
 
+  const [shuffle, setShuffle] = useState<boolean>(false);
+
+  const [repeat, setRepeat] = useState<RepeatMode>(RepeatMode.NONE);
+
   return (
     <PlayerContext.Provider
       value={{
@@ -81,6 +99,10 @@ const PlayerProvider: React.FC<PlayerProviderProps> = ({ children }) => {
         setPause,
         currentSong,
         setCurrentSong,
+        shuffle,
+        setShuffle,
+        repeat,
+        setRepeat,
       }}
     >
       {children}
