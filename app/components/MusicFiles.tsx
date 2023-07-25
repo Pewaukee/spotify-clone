@@ -23,7 +23,6 @@ export default function MusicFiles() {
             // autoplay the first song
             <audio
               key={index}
-              autoPlay={index === 0}
               src={item}
               className='audio-file'
               id={`audio-file-${index}`}
