@@ -25,7 +25,7 @@ export default function MusicFiles() {
               key={index}
               src={item}
               className='audio-file'
-              id={`audio-file-${index}`}
+              id={item} // unique id as the song preview string
             >
               This browser does not support this audio file.
             </audio>
