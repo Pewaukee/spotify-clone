@@ -1,6 +1,5 @@
 'use client';
 import { LinearProgress, Skeleton } from '@mui/material';
-import { FastForward, Repeat, Rewind, Shuffle } from 'lucide-react';
 import Image from 'next/image';
 import VolumeSlider from './VolumeSlider';
 import MusicFiles from './MusicFiles';
@@ -10,8 +9,12 @@ import {
   useEffect,
   useState,
 } from 'react';
-import PlayPause from './PlayPause';
+import PlayPause from './ControlButtons/PlayPause';
 import { timeString } from '@/utils/timeUtil';
+import FastForwardButton from './ControlButtons/FastForwardButton';
+import RewindButton from './ControlButtons/RewindButton';
+import ShuffleButton from './ControlButtons/ShuffleButton';
+import RepeatButton from './ControlButtons/RepeatButton';
 
 export default function Player() {
   // import context variables
@@ -59,7 +62,7 @@ export default function Player() {
    * 3. the current <audio> element
    */
   useEffect(() => {
-    // if index overshoots length, just set it back to nothing
+    // if index overshoots length of queue, just set it back to nothing
     if (index >= queue.length) {
       setTime(0);
       return setCurrentSong(null);
@@ -163,27 +166,11 @@ export default function Player() {
         <div className='flex flex-col'>
           <div className='flex justify-center items-center mt-4'>
             <div className='flex flex-row'>
-              <Shuffle
-                size={20}
-                className='hover:text-gray-300'
-              />
-              <Rewind
-                size={20}
-                className='ml-2 hover:text-gray-300'
-              />
-
+              <ShuffleButton />
+              <RewindButton index={index} setIndex={setIndex}/>
               <PlayPause />
-
-              <FastForward
-                size={20}
-                className='ml-2 hover:text-gray-300'
-              />
-              <Repeat
-                size={20}
-                className='ml-2 hover:text-gray-300'
-              />
-              {/** conditional */}
-              {/* <Repeat1 /> */}
+              <FastForwardButton index={index} setIndex={setIndex}/>
+              <RepeatButton />
             </div>
           </div>
 
