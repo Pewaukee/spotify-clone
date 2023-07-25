@@ -19,8 +19,7 @@ export default async function handler(
       return res.status(400).json({ message: 'Missing query parameters' });
     }
     const response = await axios.get(
-      // match the current protocol
-      `//api.deezer.com/search/album?q=${title}&limit=5`
+      `https://api.deezer.com/search/album?q=${title}&limit=5`
     );
     // check errors for axios request
     if (response.status !== 200) {
