@@ -1,96 +1,113 @@
 'use client';
 import { LinearProgress, Skeleton } from '@mui/material';
-import { FastForward, Repeat, Repeat1, Rewind, Shuffle } from 'lucide-react';
+import { FastForward, Repeat, Rewind, Shuffle } from 'lucide-react';
 import Image from 'next/image';
 import VolumeSlider from './VolumeSlider';
 import MusicFiles from './MusicFiles';
 import { usePlayer } from '../context/PlayerContext';
-import { useCallback, useEffect, useState } from 'react';
+import {
+  useCallback, // memoizes the function so that it doesn't change every render
+  useEffect,
+  useState,
+} from 'react';
 import PlayPause from './PlayPause';
+import { timeString } from '@/utils/timeUtil';
 
 export default function Player() {
+  // import context variables
   const { queue, volume, pause, currentSong, setCurrentSong } = usePlayer();
-  const [currentTime, setCurrentTime] = useState<number>(0);
+  // time state for the slider
+  const [time, setTime] = useState<number>(0);
   // keep track of the position in the queue
   const [index, setIndex] = useState<number>(0);
+  // keep track of the current <audio> element
+  const [audioFile, setAudioFile] = useState<HTMLAudioElement | null>(null);
+
+  // event listener for when the song ends
+  const audioEnded = useCallback((): void => {
+    if (audioFile) setIndex(index + 1);
+  }, [index, setIndex, audioFile]);
+
+  // get the amount of time that has passed in the current <audio> element
+  const getCurrentTime = useCallback((): void => {
+    audioFile ? setTime(Math.round(audioFile.currentTime)) : setTime(0);
+  }, [audioFile]);
 
   // get the audio file by the corresponding index
   // by searching for the UNIQUE id of the audio file
-  const getAudioFile = useCallback(
-    (): HTMLAudioElement | null => {
-      if (queue.length === 0) return null;
-      //TODO: include an index check later
-      try {
-        return document.getElementById(`audio-file-${index}`) as HTMLAudioElement
-      } catch (error) {
-        throw new Error('could not find the audio file');
-      }
-    }, [index, queue.length]
-  );
+  const getAudioFile = useCallback((): void => {
+    setAudioFile(
+      (document.getElementById(`audio-file-${index}`) as HTMLAudioElement) ??
+        null
+    );
+  }, [index]);
 
   // set the volume attribute of the <audio> element
   const setVolumeofAudio = useCallback(() => {
-    const audioFile = getAudioFile();
     if (audioFile) audioFile.volume = volume[0] / 200; // customizable scalar
-  }, [volume, getAudioFile]);
+  }, [volume, audioFile]);
 
-  // either pause or play the current <audio> element
+  // call the pause or play funciton on the current <audio> element
   const setPauseofAudio = useCallback(() => {
-    const audioFile = getAudioFile();
     if (audioFile) pause ? audioFile.play() : audioFile.pause();
-  }, [pause, getAudioFile]);
+  }, [pause, audioFile]);
 
-  // get the amount of time that has passed in the current <audio> element
-  const getCurrentTime = (): number => {
-    const audioFile = getAudioFile();
-    if (audioFile) return Math.round(audioFile.currentTime);
-    else return 0;
-  };
-
-  // convert the time to a time-readable string
-  const timeString = (time: number): string =>
-    `0:${time < 10 ? `0${time}` : time}`;
-
-  // check the status of the current <audio> element
-  // if it has ended, then load the next song
-  const checkStatusOfAudio = () => {
-    const audioFile = getAudioFile();
-    if (audioFile && audioFile.ended) {
-      // pause the current song to make sure it stops
-      audioFile.pause();
-      // then load the next song by triggering the re-render and the useEffect hook
-      setIndex(index + 1);
-    }
-  };
-
+  /**
+   * for the queue and index, we only need to update the following:
+   * 1. the current song
+   * 2. the current time (reset back to zero if the index changes and we have a new song)
+   * 3. the current <audio> element
+   */
   useEffect(() => {
-    if (queue.length === 0) return setCurrentSong(null);
+    // if index overshoots length, just set it back to nothing
+    if (index >= queue.length) {
+      setTime(0);
+      return setCurrentSong(null);
+    }
     // on a change of index, run the following code
     setCurrentSong(queue[index]);
-    setCurrentTime(0);
-    // update the next <audio> component's volume
-    setVolumeofAudio();
-    // play the next song
-    setPauseofAudio();
-  }, [index, queue, setCurrentSong, setPauseofAudio, setVolumeofAudio]);
+    // set the current time
+    setTime(0);
+    // set the current <audio> element
+    getAudioFile();
+  }, [JSON.stringify(queue), index]); // useEffect with lists runs infinitely, so use JSON.stringify
 
+  /**
+   * only for the change in the volume,
+   * we need to update the only the volume of the current audio clip
+   */
   useEffect(() => {
     // set the volume if the volume changes
     setVolumeofAudio();
-  }, [volume, queue, setVolumeofAudio]);
+  }, [setVolumeofAudio, volume]);
 
+  // event that adds event listeners to the <audio> element
+  // only when the audioFile changes
+  useEffect(() => {
+    // add the event listeners when the component mounts
+    if (audioFile) {
+      // should independently add event listeners to each <audio> element
+      audioFile.addEventListener('ended', audioEnded);
+      audioFile.addEventListener('timeupdate', getCurrentTime);
+    }
+
+    // remove the event listeners when the component unmounts
+    return () => {
+      if (audioFile) {
+        audioFile.removeEventListener('ended', audioEnded);
+        audioFile.removeEventListener('timeupdate', getCurrentTime);
+      }
+    };
+  }, [audioFile, audioEnded, getCurrentTime]);
+
+  /**
+   * either pause or play the audio file
+   * depends on the play button and also a
+   * new existing audio file
+   */
   useEffect(() => {
     setPauseofAudio();
-  }, [pause, setPauseofAudio]);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentTime(getCurrentTime());
-      checkStatusOfAudio();
-    }, 500);
-
-    return () => clearInterval(interval);
-  });
+  }, [setPauseofAudio, audioFile, pause]);
 
   return (
     <div className='absolute h-[70px] inset-x-0 bottom-0 bg-black z-30'>
@@ -171,17 +188,16 @@ export default function Player() {
           </div>
 
           <div className='flex flex-row justify-center items-center mt-2'>
-            <p className='mr-2 text-xs text-gray-300'>
-              {timeString(currentTime)}
-            </p>
+            <p className='mr-2 text-xs text-gray-300'>{timeString(time)}</p>
             <LinearProgress
               variant='determinate'
-              value={(currentTime / 30) * 100}
+              value={(time / 30) * 100}
               className='w-[80%]'
             />
             <p className='ml-2 text-xs text-gray-300'>0:30</p>
           </div>
         </div>
+        {/** right side with the volume slider */}
         <VolumeSlider />
       </div>
       {/** add the music */}
