@@ -1,36 +1,31 @@
 'use client';
 import { LinearProgress, Skeleton } from '@mui/material';
-import { FastForward, Repeat, Repeat1, Rewind, Shuffle } from 'lucide-react';
+import { FastForward, Repeat, Rewind, Shuffle } from 'lucide-react';
 import Image from 'next/image';
 import VolumeSlider from './VolumeSlider';
 import MusicFiles from './MusicFiles';
-import { Queue, usePlayer } from '../context/PlayerContext';
+import { usePlayer } from '../context/PlayerContext';
 import {
-  useCallback,
+  useCallback, // memoizes the function so that it doesn't change every render
   useEffect,
   useState,
-  useRef,
-  MutableRefObject,
 } from 'react';
 import PlayPause from './PlayPause';
+import { timeString } from '@/utils/timeUtil';
 
 export default function Player() {
+  // import context variables
   const { queue, volume, pause, currentSong, setCurrentSong } = usePlayer();
+  // time state for the slider
   const [time, setTime] = useState<number>(0);
   // keep track of the position in the queue
   const [index, setIndex] = useState<number>(0);
   // keep track of the current <audio> element
   const [audioFile, setAudioFile] = useState<HTMLAudioElement | null>(null);
 
-  // check the status of the current <audio> element
-  // if it has ended, then load the next song
-  const audioEnded = useCallback(() => {
-    // pause the current song to make sure it stops
-    // then load the next song by triggering the re-render and the useEffect hook
-    if (audioFile) {
-      console.log(audioFile.paused);
-      setIndex(index + 1);
-    }
+  // event listener for when the song ends
+  const audioEnded = useCallback((): void => {
+    if (audioFile) setIndex(index + 1);
   }, [index, setIndex, audioFile]);
 
   // get the amount of time that has passed in the current <audio> element
@@ -52,102 +47,67 @@ export default function Player() {
     if (audioFile) audioFile.volume = volume[0] / 200; // customizable scalar
   }, [volume, audioFile]);
 
-  // either pause or play the current <audio> element
+  // call the pause or play funciton on the current <audio> element
   const setPauseofAudio = useCallback(() => {
     if (audioFile) pause ? audioFile.play() : audioFile.pause();
   }, [pause, audioFile]);
 
-  // convert the time to a time-readable string
-  const timeString = (time: number): string =>
-    `0:${time < 10 ? `0${time}` : time}`;
-
-  // const useDeepCompareEffect = (callback: () => void, dependencies: any[]) => {
-  //   const ref: MutableRefObject<any[]> = useRef<any[]>([]);
-
-  //   if (
-  //     ref.current.length === 0 ||
-  //     !areEqual(ref.current[0], dependencies[0]) || // check change in queue itself
-  //     !(ref.current[1] === dependencies[1]) // check change in index
-  //   ) {
-  //     ref.current = dependencies;
-  //   }
-
-  //   useEffect(callback, [ref.current]);
-  // };
-
-  // const areEqual = (array1: Queue, array2: Queue): boolean => {
-  //   if (array1.length !== array2.length) return false;
-  //   for (let i = 0; i < array1.length; i++) {
-  //     // check on preview, must be unique
-  //     if (array1[i]?.preview !== array2[i]?.preview) return false;
-  //   }
-  //   return true;
-  // };
-
+  /**
+   * for the queue and index, we only need to update the following:
+   * 1. the current song
+   * 2. the current time (reset back to zero if the index changes and we have a new song)
+   * 3. the current <audio> element
+   */
   useEffect(() => {
-    console.log('useEffect 1')
-    console.log(index)
-    if (index >= queue.length) return setCurrentSong(null);
+    // if index overshoots length, just set it back to nothing
+    if (index >= queue.length) {
+      setTime(0);
+      return setCurrentSong(null);
+    }
     // on a change of index, run the following code
     setCurrentSong(queue[index]);
     // set the current time
-    setTime(0);    
+    setTime(0);
     // set the current <audio> element
     getAudioFile();
-    // set the volume of audio
-    // setVolumeofAudio();
-    // play the next song
-    // setPauseofAudio();
   }, [JSON.stringify(queue), index]); // useEffect with lists runs infinitely, so use JSON.stringify
 
-  // useEffect(() => {
-  //   console.log(queue);
-  //   if (index >= queue.length) return Song(null);
-  //   // on a change of index, run the following code
-  //   setCurrentSong(queue[index]);
-  //   // set the current <audio> element
-  //   getAudioFile();
-  //   // play the next song
-  //   setPauseofAudio();
-  // }, [queue]);
-
-  // useEffect(() => {
-  //   console.log('useEffect 1');
-  //   if (index >= queue.length) return setCurrentSong(null);
-  //   // on a change of index, run the following code
-  //   setCurrentSong(queue[index]);
-  //   // set the current <audio> element
-  //   getAudioFile();
-  //   // play the next song
-  //   setPauseofAudio();
-  // }, [index, setCurrentSong, getAudioFile, setPauseofAudio]);
-
+  /**
+   * only for the change in the volume,
+   * we need to update the only the volume of the current audio clip
+   */
   useEffect(() => {
-    console.log('useEffect 2');
     // set the volume if the volume changes
     setVolumeofAudio();
   }, [setVolumeofAudio, volume]);
 
+  // event that adds event listeners to the <audio> element
+  // only when the audioFile changes
   useEffect(() => {
-    console.log('useEffect 3');
-    if (audioFile) { // should independently add event listeners to each <audio> element
+    // add the event listeners when the component mounts
+    if (audioFile) {
+      // should independently add event listeners to each <audio> element
       audioFile.addEventListener('ended', audioEnded);
       audioFile.addEventListener('timeupdate', getCurrentTime);
     }
 
+    // remove the event listeners when the component unmounts
     return () => {
-      // remove the event listeners when the component unmounts
       if (audioFile) {
         audioFile.removeEventListener('ended', audioEnded);
         audioFile.removeEventListener('timeupdate', getCurrentTime);
       }
-    }
+    };
   }, [audioFile, audioEnded, getCurrentTime]);
 
+  /**
+   * either pause or play the audio file
+   * depends on the play button and also a
+   * new existing audio file
+   */
   useEffect(() => {
     setPauseofAudio();
   }, [setPauseofAudio, audioFile, pause]);
-
 
   return (
     <div className='absolute h-[70px] inset-x-0 bottom-0 bg-black z-30'>
