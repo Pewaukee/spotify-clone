@@ -23,49 +23,37 @@ export default function PlayButton({
   };
 
   // construct a queue from the data variable
-  const constructQueue = useCallback(
-    (
-      data: {
-        albumCover: string;
-        mp3Previews: {
-          title: string;
-          preview: string;
-        }[];
-        artistName: string;
-      } | null
-    ): Queue => {
-      // construct the new list based on the following type sig
-      /**
-       * type Song = {
-       * title: string;
-       * preview: string;
-       * image_src: string;
-       * artist: string;
-       * } | null;
-       */
-      if (data) {
-        setQueue([]);
-        const newQueue: Queue = [];
-        const image_src = data.albumCover;
-        const artist = data.artistName;
-        data.mp3Previews.forEach((track) => {
-          newQueue.push({
-            title: track.title,
-            preview: track.preview,
-            image_src: image_src,
-            artist: artist,
-          });
+  const constructQueue = useCallback((): Queue => {
+    // construct the new list based on the following type sig
+    /**
+     * type Song = {
+     * title: string;
+     * preview: string;
+     * image_src: string;
+     * artist: string;
+     * } | null;
+     */
+    if (data) {
+      setQueue([]);
+      const newQueue: Queue = [];
+      const image_src = data.albumCover;
+      const artist = data.artistName;
+      data.mp3Previews.forEach((track) => {
+        newQueue.push({
+          title: track.title,
+          preview: track.preview,
+          image_src: image_src,
+          artist: artist,
         });
-        return newQueue;
-      }
-      return [];
-    },
-    [data, setQueue]
-  );
+      });
+      return newQueue;
+    }
+    return [];
+  }, [setQueue, data]);
 
   // on a change of data, set the queue with the function
   useEffect(() => {
-    setQueue(constructQueue(data));
+    setQueue(constructQueue());
   }, [data, setQueue, constructQueue]);
 
   return (
