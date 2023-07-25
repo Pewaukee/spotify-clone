@@ -62,12 +62,14 @@ export default function Player() {
    * 3. the current <audio> element
    */
   useEffect(() => {
+    // pause the current audio, helps with fast forward and rewind
+    if (audioFile) audioFile.pause();
     // if index overshoots length of queue, just set it back to nothing
     if (index >= queue.length) {
       setTime(0);
       return setCurrentSong(null);
     }
-    // on a change of index, run the following code
+    // set the new current song object
     setCurrentSong(queue[index]);
     // set the current time
     setTime(0);
@@ -167,9 +169,9 @@ export default function Player() {
           <div className='flex justify-center items-center mt-4'>
             <div className='flex flex-row'>
               <ShuffleButton />
-              <RewindButton index={index} setIndex={setIndex}/>
+              <RewindButton index={index} setIndex={setIndex} audioFile={audioFile}/>
               <PlayPause />
-              <FastForwardButton index={index} setIndex={setIndex}/>
+              <FastForwardButton index={index} setIndex={setIndex} audioFile={audioFile}/>
               <RepeatButton />
             </div>
           </div>

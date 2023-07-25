@@ -4,12 +4,15 @@ import React, { Dispatch, SetStateAction } from 'react';
 export default function FastForwardButton({
   index,
   setIndex,
+  audioFile
 }: {
   index: number;
   setIndex: Dispatch<SetStateAction<number>>;
+  audioFile: HTMLAudioElement | null;
 }) {
   const next = () => {
-    setIndex(index + 1);
+    // only if the audio file exists, increment the index
+    if (audioFile) setIndex(index + 1);
   };
   return (
     <button onClick={next}>
