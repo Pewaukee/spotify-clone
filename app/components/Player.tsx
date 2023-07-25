@@ -3,7 +3,7 @@ import { LinearProgress, Skeleton } from '@mui/material';
 import Image from 'next/image';
 import VolumeSlider from './VolumeSlider';
 import MusicFiles from './MusicFiles';
-import { usePlayer } from '../context/PlayerContext';
+import { Queue, RepeatMode, usePlayer } from '../context/PlayerContext';
 import {
   useCallback, // memoizes the function so that it doesn't change every render
   useEffect,
@@ -15,10 +15,12 @@ import FastForwardButton from './ControlButtons/FastForwardButton';
 import RewindButton from './ControlButtons/RewindButton';
 import ShuffleButton from './ControlButtons/ShuffleButton';
 import RepeatButton from './ControlButtons/RepeatButton';
+import { shuffleList } from '@/utils/shuffle';
 
 export default function Player() {
   // import context variables
-  const { queue, volume, pause, currentSong, setCurrentSong } = usePlayer();
+  const { queue, volume, pause, currentSong, setCurrentSong, shuffle, repeat } =
+    usePlayer();
   // time state for the slider
   const [time, setTime] = useState<number>(0);
   // keep track of the position in the queue
@@ -26,9 +28,19 @@ export default function Player() {
   // keep track of the current <audio> element
   const [audioFile, setAudioFile] = useState<HTMLAudioElement | null>(null);
 
+  //TODO: just need random indexes, not a random queue
+
   // event listener for when the song ends
   const audioEnded = useCallback((): void => {
-    if (audioFile) setIndex(index + 1);
+    // if repeatMode is ONE, then just replay the same song
+    if (repeat === RepeatMode.REPEAT_ONE) {
+      if (audioFile) {
+        audioFile.currentTime = 0;
+        audioFile.play();
+      }
+    }
+    // otherwise, increment the index
+    else if (audioFile) setIndex(index + 1);
   }, [index, setIndex, audioFile]);
 
   // get the amount of time that has passed in the current <audio> element
@@ -39,11 +51,13 @@ export default function Player() {
   // get the audio file by the corresponding index
   // by searching for the UNIQUE id of the audio file
   const getAudioFile = useCallback((): void => {
-    setAudioFile(
-      (document.getElementById(`audio-file-${index}`) as HTMLAudioElement) ??
-        null
-    );
-  }, [index]);
+    if (currentSong) {
+      setAudioFile(
+        (document.getElementById(currentSong.preview) as HTMLAudioElement) ??
+          null
+      );
+    } else setAudioFile(null);
+  }, [index, currentSong]);
 
   // set the volume attribute of the <audio> element
   const setVolumeofAudio = useCallback(() => {
@@ -57,38 +71,45 @@ export default function Player() {
 
   /**
    * for the queue and index, we only need to update the following:
-   * 1. the current song
-   * 2. the current time (reset back to zero if the index changes and we have a new song)
-   * 3. the current <audio> element
+   * the current song, and the current time
    */
   useEffect(() => {
-    // pause the current audio, helps with fast forward and rewind
-    if (audioFile) audioFile.pause();
-    // if index overshoots length of queue, just set it back to nothing
-    if (index >= queue.length) {
-      setTime(0);
-      return setCurrentSong(null);
+    console.log(queue)
+    // pause the current audio and rewind to the start, helps with fast forward and rewind
+    if (audioFile) {
+      audioFile.pause();
+      audioFile.currentTime = 0;
     }
-    // set the new current song object
-    setCurrentSong(queue[index]);
     // set the current time
     setTime(0);
-    // set the current <audio> element
-    getAudioFile();
+    // if index overshoots length of queue, check repeat
+    if (index >= queue.length) {
+      if (repeat === RepeatMode.NONE) {
+        setTime(0);
+        setCurrentSong(null);
+      }
+      else if (repeat === RepeatMode.REPEAT_ALL) {
+        setIndex(0);
+      }  
+      // return here so that the useEffect runs again
+      // for setIndex or currentSong doesn't get overwritten
+      return;    
+    }
+    // set the new current song object based on shuffle or not
+    setCurrentSong(queue[index]);
   }, [JSON.stringify(queue), index]); // useEffect with lists runs infinitely, so use JSON.stringify
 
-  /**
-   * only for the change in the volume,
-   * we need to update the only the volume of the current audio clip
-   */
+  // if the current song changes, only then get the audio file
   useEffect(() => {
-    // set the volume if the volume changes
-    setVolumeofAudio();
-  }, [setVolumeofAudio, volume]);
+    console.log('current song changed', currentSong)
+    // set the current audio element
+    getAudioFile();
+  }, [currentSong, getAudioFile]);
 
   // event that adds event listeners to the <audio> element
   // only when the audioFile changes
   useEffect(() => {
+    console.log('audio file changed', audioFile)
     // add the event listeners when the component mounts
     if (audioFile) {
       // should independently add event listeners to each <audio> element
@@ -113,6 +134,15 @@ export default function Player() {
   useEffect(() => {
     setPauseofAudio();
   }, [setPauseofAudio, audioFile, pause]);
+
+  /**
+   * only for the change in the volume,
+   * we need to update the only the volume of the current audio clip
+   */
+  useEffect(() => {
+    // set the volume if the volume changes
+    setVolumeofAudio();
+  }, [setVolumeofAudio, volume]);
 
   return (
     <div className='absolute h-[70px] inset-x-0 bottom-0 bg-black z-30'>
@@ -169,9 +199,17 @@ export default function Player() {
           <div className='flex justify-center items-center mt-4'>
             <div className='flex flex-row'>
               <ShuffleButton />
-              <RewindButton index={index} setIndex={setIndex} audioFile={audioFile}/>
+              <RewindButton
+                index={index}
+                setIndex={setIndex}
+                audioFile={audioFile}
+              />
               <PlayPause />
-              <FastForwardButton index={index} setIndex={setIndex} audioFile={audioFile}/>
+              <FastForwardButton
+                index={index}
+                setIndex={setIndex}
+                audioFile={audioFile}
+              />
               <RepeatButton />
             </div>
           </div>

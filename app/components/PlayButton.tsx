@@ -2,7 +2,7 @@
 
 import useMusic from '@/hooks/useMusic';
 import Image from 'next/image';
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Queue, usePlayer } from '../context/PlayerContext';
 
 export default function PlayButton({
@@ -22,10 +22,18 @@ export default function PlayButton({
     });
   };
 
-  useEffect(() => {
-    if (data) {
-      clearQueue();
-      
+  // construct a queue from the data variable
+  const constructQueue = useCallback(
+    (
+      data: {
+        albumCover: string;
+        mp3Previews: {
+          title: string;
+          preview: string;
+        }[];
+        artistName: string;
+      } | null
+    ): Queue => {
       // construct the new list based on the following type sig
       /**
        * type Song = {
@@ -35,21 +43,30 @@ export default function PlayButton({
        * artist: string;
        * } | null;
        */
-      const newQueue: Queue = [];
-      const image_src = data.albumCover;
-      const artist = data.artistName;
-      data.mp3Previews.forEach((track) => {
-        newQueue.push({
-          title: track.title,
-          preview: track.preview,
-          image_src: image_src,
-          artist: artist,
+      if (data) {
+        setQueue([]);
+        const newQueue: Queue = [];
+        const image_src = data.albumCover;
+        const artist = data.artistName;
+        data.mp3Previews.forEach((track) => {
+          newQueue.push({
+            title: track.title,
+            preview: track.preview,
+            image_src: image_src,
+            artist: artist,
+          });
         });
-      });
+        return newQueue;
+      }
+      return [];
+    },
+    [data, setQueue]
+  );
 
-      setQueue(newQueue);
-    }
-  }, [data, clearQueue, setQueue]);
+  // on a change of data, set the queue with the function
+  useEffect(() => {
+    setQueue(constructQueue(data));
+  }, [data, setQueue, constructQueue]);
 
   return (
     <div className='absolute top-[35%] left-[60%] brightness-110'>
