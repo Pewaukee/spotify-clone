@@ -32,9 +32,10 @@ export default function PlayButton({
      * image_src: string;
      * artist: string;
      * } | null;
+     * 
+     * type Queue = Song[];
      */
     if (data) {
-      setQueue([]);
       const newQueue: Queue = [];
       const image_src = data.albumCover;
       const artist = data.artistName;
@@ -54,7 +55,7 @@ export default function PlayButton({
   // on a change of data, set the queue with the function
   useEffect(() => {
     setQueue(constructQueue());
-  }, [data, setQueue, constructQueue]);
+  }, [setQueue, constructQueue]);
 
   return (
     <div className='absolute top-[35%] left-[60%] brightness-110'>

@@ -3,12 +3,14 @@ import { LinearProgress, Skeleton } from '@mui/material';
 import Image from 'next/image';
 import VolumeSlider from './VolumeSlider';
 import MusicFiles from './MusicFiles';
-import { Queue, RepeatMode, usePlayer } from '../context/PlayerContext';
+import { Queue, RepeatMode, Song, usePlayer } from '../context/PlayerContext';
 import {
   useCallback, // memoizes the function so that it doesn't change every render
   useEffect,
   useState,
 } from 'react';
+// import ReactDOM from 'react-dom'
+import useDeepCompareEffect from 'use-deep-compare-effect';
 import PlayPause from './ControlButtons/PlayPause';
 import { timeString } from '@/utils/timeUtil';
 import FastForwardButton from './ControlButtons/FastForwardButton';
@@ -20,18 +22,60 @@ import useMusic from '@/hooks/useMusic';
 
 export default function Player() {
   // import context variables
-  const { queue, volume, pause, currentSong, setCurrentSong, shuffle, repeat } =
+  const { queue, setQueue, volume, pause, currentSong, setCurrentSong, shuffle, repeat } =
     usePlayer();
   // use loading from api hook
   const { loading } = useMusic();
   // time state for the slider
   const [time, setTime] = useState<number>(0);
-  // keep track of the position in the queue
-  const [index, setIndex] = useState<number>(-1);
   // keep track of the current <audio> element
   const [audioFile, setAudioFile] = useState<HTMLAudioElement | null>(null);
-  // keep track of the random indices for shuffle  
+  // keep track of the random indices for shuffle
   const [randomIndices, setRandomIndices] = useState<number[]>([]);
+
+  // callback to find first song in queue
+  const firstSong = useCallback((): Song => {
+    if (queue.length === 0) return null;
+    return shuffle ? queue[randomIndices[0]] : queue[0];
+  }, [queue, shuffle, randomIndices]);
+
+  // find the corresponding matching index of the current song in queue based on the shuffle
+  const findIndexOfSong = useCallback((): number => {
+    if (!currentSong) return -1;
+    const index = queue.findIndex((song: Song) => {
+      return song && song.preview === currentSong.preview;
+    });
+    return shuffle ? randomIndices.indexOf(index) : index;
+  }, [currentSong, queue, shuffle, randomIndices]);
+
+  // find next song in queue based on shuffle and repeat, covering edge cases
+  const findNextSong = useCallback((): Song => {
+    if (queue.length === 0) return null;
+    // if the current song is null, then return the first song
+    if (!currentSong) {
+      return firstSong();
+    }
+    const index = findIndexOfSong();
+    // if overshooting the last index, return based on the repeat mode
+    if (index === queue.length - 1) {
+      if (repeat === RepeatMode.NONE) {
+        setTime(0);
+        setQueue([]);
+        return null;
+      } else if (repeat === RepeatMode.REPEAT_ALL) {
+        return firstSong();
+      }
+    }
+    return shuffle ? queue[randomIndices[index + 1]] : queue[index + 1];
+  }, [
+    queue,
+    currentSong,
+    shuffle,
+    randomIndices,
+    repeat,
+    firstSong,
+    findIndexOfSong,
+  ]);
 
   // event listener for when the song ends
   const audioEnded = useCallback((): void => {
@@ -42,12 +86,9 @@ export default function Player() {
         audioFile.play();
       }
     }
-    // otherwise, increment the index
-    else if (audioFile)
-      setIndex(
-        shuffle ? randomIndices[randomIndices.indexOf(index) + 1] : index + 1
-      );
-  }, [index, setIndex, audioFile, shuffle, randomIndices, repeat]);
+    // otherwise, increment the song
+    else if (audioFile) setCurrentSong(findNextSong());
+  }, [audioFile, shuffle, randomIndices, repeat]);
 
   // get the amount of time that has passed in the current <audio> element
   const getCurrentTime = useCallback((): void => {
@@ -72,62 +113,38 @@ export default function Player() {
 
   // call the pause or play funciton on the current <audio> element
   const setPauseofAudio = useCallback(() => {
-    if (audioFile) pause ? audioFile.play() : audioFile.pause();
+    if (audioFile) pause ? audioFile.pause() : audioFile.play();
   }, [pause, audioFile]);
 
-  const updateShuffle = useCallback(() => {
+  // useEffect with lists runs infinitely, so use JSON.stringify
+  // useDeepCompareEffect actually compares the contents of the list
+  useDeepCompareEffect(() => {
     if (queue.length > 0) {
-      setRandomIndices(() => {
-        const newRandomIndices = shuffleIndices(queue.length);
-        setIndex(shuffle ? newRandomIndices[0] : 0);
-        return newRandomIndices;
-      });
-      // setRandomIndices(shuffleIndices(queue.length));
-      // setIndex(shuffle ? randomIndices[0] : 0);
+      setRandomIndices(shuffleIndices(queue.length));
     }
-  }, [queue, setRandomIndices, setIndex]);
+  }, [queue, setRandomIndices, shuffleIndices]);
 
-  useEffect(() => {
-    updateShuffle();
-  }, [JSON.stringify(queue), setRandomIndices, updateShuffle]); // useEffect with lists runs infinitely, so use JSON.stringify
-
-  /**
-   * for the queue and index, we only need to update the following:
-   * the current song, and the current time
-   */
-  useEffect(() => {
-    // pause the current audio and rewind to the start, helps with fast forward and rewind
-    if (audioFile) {
-      audioFile.pause();
-      audioFile.currentTime = 0;
-    }
-    // set the current time
-    setTime(0);
-    // if index overshoots length of queue, check repeat
-    if (index >= queue.length) {
-      if (repeat === RepeatMode.NONE) {
-        setTime(0);
-        setCurrentSong(null);
-      } else if (repeat === RepeatMode.REPEAT_ALL) {
-        setIndex(0);
-      }
-      // return here so that the useEffect runs again
-      // for setIndex or currentSong doesn't get overwritten
-      return;
-    }
-    // set the new current song object based on shuffle or not
-    setCurrentSong(queue[index]);
-  }, [index]);
+  // when the randomIndices list changes, update the current song
+  useDeepCompareEffect(() => {
+    setCurrentSong(firstSong());
+  }, [randomIndices, setCurrentSong, firstSong]);
 
   // if the current song changes, only then get the audio file
   useEffect(() => {
-    // set the current audio element
+    // first pause the currently playing audio file
+    if (audioFile) {
+      audioFile.pause();
+      // set time back to zero in case it were played again
+      audioFile.currentTime = 0;
+    }
+    // set the new audio element
     getAudioFile();
   }, [currentSong, getAudioFile]);
 
   // event that adds event listeners to the <audio> element
   // only when the audioFile changes
   useEffect(() => {
+    console.log('audiofile', audioFile)
     // add the event listeners when the component mounts
     if (audioFile) {
       // should independently add event listeners to each <audio> element
@@ -151,7 +168,7 @@ export default function Player() {
    */
   useEffect(() => {
     setPauseofAudio();
-  }, [setPauseofAudio, audioFile, pause]);
+  }, [setPauseofAudio, audioFile?.src, pause]);
 
   /**
    * only for the change in the volume,
@@ -218,17 +235,15 @@ export default function Player() {
             <div className='flex flex-row'>
               <ShuffleButton />
               <RewindButton
-                index={index}
-                setIndex={setIndex}
+                setCurrentSong={setCurrentSong}
                 audioFile={audioFile}
                 randomIndices={randomIndices}
+                findIndexOfSong={findIndexOfSong}
               />
               <PlayPause />
               <FastForwardButton
-                index={index}
-                setIndex={setIndex}
-                audioFile={audioFile}
-                randomIndices={randomIndices}
+                setCurrentSong={setCurrentSong}
+                findNextSong={findNextSong}
               />
               <RepeatButton />
             </div>

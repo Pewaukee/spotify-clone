@@ -15,7 +15,7 @@ import React, { createContext, useContext, useState } from 'react';
  * and also the picture and the artist
  * all of this can be used to display onto the player
  */
-type Song = {
+export type Song = {
   title: string;
   preview: string;
   image_src: string;
@@ -59,7 +59,7 @@ const PlayerContext = createContext<PlayerContextInterface>({
   queue: [],
   setQueue: () => {}, // The () is a placeholder value used when the context is accessed outside PlayerProvider
   clearQueue: () => {}, // Still a placeholder, but matches the actual implementation
-  pause: true,
+  pause: false,
   setPause: () => {},
   currentSong: null,
   setCurrentSong: () => {},
@@ -79,7 +79,7 @@ const PlayerProvider: React.FC<PlayerProviderProps> = ({ children }) => {
   const [queue, setQueue] = useState<Queue>([]);
   const clearQueue = () => setQueue([]);
 
-  const [pause, setPause] = useState<boolean>(true);
+  const [pause, setPause] = useState<boolean>(false);
 
   const [currentSong, setCurrentSong] = useState<Song>(null);
 
