@@ -1,4 +1,3 @@
-import React from 'react';
 import { Song } from '@/app/context/PlayerContext';
 import { FastForward } from 'lucide-react';
 
