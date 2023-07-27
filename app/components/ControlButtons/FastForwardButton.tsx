@@ -1,5 +1,6 @@
 import React from 'react';
 import { Song } from '@/app/context/PlayerContext';
+import { usePlayer } from '@/app/context/PlayerContext';
 import { FastForward } from 'lucide-react';
 
 export default function FastForwardButton({
@@ -9,6 +10,7 @@ export default function FastForwardButton({
   setCurrentSong: (newCurrentSong: Song) => void;
   findNextSong: () => Song;
 }) {
+  const { shuffle } = usePlayer();
   const next = () => {
     setCurrentSong(findNextSong());
   };
