@@ -2,6 +2,7 @@ import { useState } from 'react';
 import axios from 'axios';
 
 export default function useMusic() {
+  
   const [data, setData] = useState<{
     albumCover: string;
     mp3Previews: {
@@ -10,8 +11,10 @@ export default function useMusic() {
     }[];
     artistName: string;
   } | null>(null);
+
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
   const fetchMusic = async ({
@@ -30,7 +33,7 @@ export default function useMusic() {
             },
         });
 
-      console.log(response);
+      console.log(response.data);
       setData(response.data);
       setLoading(false);
     } catch (error: any) {
