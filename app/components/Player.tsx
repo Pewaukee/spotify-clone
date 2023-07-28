@@ -119,6 +119,8 @@ export default function Player() {
   // useEffect with lists runs infinitely, so use JSON.stringify
   // useDeepCompareEffect actually compares the contents of the list
   useDeepCompareEffect(() => {
+    // clear whatever music was playing before, get a fresh start
+    setAudioFile(null);
     if (queue.length > 0) {
       setRandomIndices(shuffleIndices(queue.length));
     }
