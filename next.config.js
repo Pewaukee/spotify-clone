@@ -3,7 +3,11 @@ const nextConfig = {
   /* add configuration for loading images in <Image> component */
   images: {
     /** allow images from the following domain */
-    domains: ['e-cdns-images.dzcdn.net', 'e-cdn-images.dzcdn.net'],
+    domains: [
+      'e-cdns-images.dzcdn.net',
+      'e-cdn-images.dzcdn.net',
+      'images.unsplash.com',
+    ],
   },
   async headers() {
     return [
