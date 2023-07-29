@@ -1,5 +1,6 @@
 import Navbar from './components/Navbar';
 import Player from './components/Player';
+import PlayerProvider from './context/PlayerContext';
 import './globals.css';
 import type { Metadata } from 'next';
 
@@ -17,11 +18,12 @@ export default function RootLayout({
     <html lang='en'>
       <body>
         <main className='bg-neutral-700 min-h-screen'>
-          <Navbar />
-        {children}
-        {/* <Player /> */}
+          <PlayerProvider>
+            {children}
+
+            <Player />
+          </PlayerProvider>
         </main>
-        
       </body>
     </html>
   );
