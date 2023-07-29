@@ -5,8 +5,11 @@ export default function useMusic() {
   
   const [data, setData] = useState<{
     albumCover: string;
-    mp3Previews: {
+    tracks: {
       title: string;
+      duration: number;
+      explicit_lyrics: boolean;
+      track_position: number;
       preview: string;
     }[];
     artistName: string;
