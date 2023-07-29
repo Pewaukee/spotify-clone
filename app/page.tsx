@@ -31,6 +31,11 @@ export default function Home() {
               title='Change of Scenery'
               description='Quinn XCII'
             />
+            <PlaylistCard
+              image={{ src: '/1999.png', alt: '1999 Rich Brian Album Cover' }}
+              title='1999'
+              description='Rich Brian'
+            />
             <Player />
           </PlayerProvider>
         </div>
