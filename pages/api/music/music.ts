@@ -66,22 +66,22 @@ export default async function handler(
      *    title: 'song title',
      *    preview: 'mp3 preview url'
      * }
+     * along with other useful information like duration and explicit lyrics
      */
-    const mp3Previews: {
-      title: string;
-      preview: string;
-    }[] = [];
-    tracks.forEach((track: any) => {
-      mp3Previews.push({
+    tracks.map((track: any) => {
+      return {
         title: track.title,
+        duration: track.duration,
+        explicit_lyrics: track.explicit_lyrics,
+        track_position: track.track_position,
         preview: track.preview,
-      });
+      }
     });
 
     return res.json({
       albumCover,
-      mp3Previews,
-      artistName
+      tracks,
+      artistName,
     });
   }
 }
