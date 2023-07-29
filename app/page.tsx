@@ -12,14 +12,24 @@ export default function Home() {
         <div className='ml-24 mt-8'>
           <PlayerProvider>
             <PlaylistCard
-              image={{ src: '/immunity.png', alt: 'Immunity Album Cover' }}
+              image={{ src: '/immunity.png', alt: 'Immunity Clairo Album Cover' }}
               title='Immunity'
               description='Clairo'
             />
             <PlaylistCard
-              image={{ src: '/swimming.png', alt: 'Swimming Album Cover' }}
+              image={{ src: '/swimming.png', alt: 'Swimming Mac Miller Album Cover' }}
               title='Swimming'
               description='Mac Miller'
+            />
+            <PlaylistCard
+              image={{ src: '/free_spirit.png', alt: 'Free Spirit Khalid Album Cover' }}
+              title='Free Spirit'
+              description='Khalid'
+            />
+            <PlaylistCard
+              image={{ src: '/change_of_scenery.png', alt: 'Change of Scenery Quinn XCII Album Cover' }}
+              title='Change of Scenery'
+              description='Quinn XCII'
             />
             <Player />
           </PlayerProvider>
