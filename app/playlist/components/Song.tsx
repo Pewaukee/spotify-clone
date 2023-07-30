@@ -4,7 +4,7 @@ import { usePlayer } from '@/app/context/PlayerContext';
 import useMusic from '@/hooks/useMusic';
 import { constructQueue } from '@/utils/constructQueue';
 import { secondsToMinutes } from '@/utils/secondsToMinutes';
-import { Headphones, Play } from 'lucide-react';
+import { Headphones, Pause, Play } from 'lucide-react';
 import Link from 'next/link';
 import React, { useCallback, useEffect } from 'react';
 import { useState } from 'react';
@@ -28,10 +28,15 @@ export default function Song({
 }) {
   const [isHovered, setIsHovered] = useState(false);
 
-  const { queue, setQueue, setCurrentSong, currentSong } = usePlayer();
+  const { queue, setQueue, setCurrentSong, currentSong, setPause, pause } =
+    usePlayer();
   const { data, loading, fetchMusic } = useMusic();
 
   const handleClick = async () => {
+    // if the song is already playing, pause it
+    if (currentSong?.title === title) {
+      setPause(!pause);
+    }
     // check if the queue already has the song
     let index: number = -1;
     if (queue) {
@@ -73,7 +78,11 @@ export default function Song({
       <div className='col-span-1 flex items-center pl-[10px]'>
         {isHovered ? (
           <button onClick={handleClick}>
-            <Play size={16} />
+            {currentSong?.preview === preview && !pause ? (
+              <Pause size={16} />
+            ) : (
+              <Play size={16} />
+            )}
           </button>
         ) : currentSong?.title === title ? (
           <Headphones
