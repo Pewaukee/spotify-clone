@@ -36,7 +36,6 @@ interface PlayerContextInterface {
   setVolume: (newVolume: number[]) => void;
   queue: Queue;
   setQueue: (newQueue: Queue) => void;
-  clearQueue: () => void;
   pause: boolean;
   setPause: (newPause: boolean) => void;
   currentSong: Song;
@@ -45,6 +44,8 @@ interface PlayerContextInterface {
   setShuffle: (newShuffle: boolean) => void;
   repeat: RepeatMode;
   setRepeat: (newRepeat: RepeatMode) => void;
+  randomIndices: number[];
+  setRandomIndices: (newRandomIndices: number[]) => void;
 }
 
 const PlayerContext = createContext<PlayerContextInterface>({
@@ -58,7 +59,6 @@ const PlayerContext = createContext<PlayerContextInterface>({
   setVolume: () => {}, // The () is a placeholder value used when the context is accessed outside PlayerProvider
   queue: [],
   setQueue: () => {}, // The () is a placeholder value used when the context is accessed outside PlayerProvider
-  clearQueue: () => {}, // Still a placeholder, but matches the actual implementation
   pause: false,
   setPause: () => {},
   currentSong: null,
@@ -67,6 +67,8 @@ const PlayerContext = createContext<PlayerContextInterface>({
   setShuffle: () => {},
   repeat: RepeatMode.NONE,
   setRepeat: () => {},
+  randomIndices: [],
+  setRandomIndices: () => {},
 });
 
 interface PlayerProviderProps {
@@ -77,7 +79,6 @@ const PlayerProvider: React.FC<PlayerProviderProps> = ({ children }) => {
   const [volume, setVolume] = useState<number[]>([50]);
 
   const [queue, setQueue] = useState<Queue>([]);
-  const clearQueue = () => setQueue([]);
 
   const [pause, setPause] = useState<boolean>(false);
 
@@ -87,6 +88,8 @@ const PlayerProvider: React.FC<PlayerProviderProps> = ({ children }) => {
 
   const [repeat, setRepeat] = useState<RepeatMode>(RepeatMode.NONE);
 
+  const [randomIndices, setRandomIndices] = useState<number[]>([]);
+
   return (
     <PlayerContext.Provider
       value={{
@@ -94,7 +97,6 @@ const PlayerProvider: React.FC<PlayerProviderProps> = ({ children }) => {
         setVolume,
         queue,
         setQueue,
-        clearQueue,
         pause,
         setPause,
         currentSong,
@@ -103,6 +105,8 @@ const PlayerProvider: React.FC<PlayerProviderProps> = ({ children }) => {
         setShuffle,
         repeat,
         setRepeat,
+        randomIndices,
+        setRandomIndices,
       }}
     >
       {children}
