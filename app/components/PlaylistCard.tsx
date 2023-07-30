@@ -16,14 +16,12 @@ export default function PlaylistCard({
 }) {
   const router = useRouter();
   return (
-    <div className='relative inline-block w-[15%] rounded-xl bg-gray-800/25 ease-in-out duration-300 group/play hover:bg-gray-500/50 mr-12'>
-      <div className='opacity-0 duration-300 ease-in-out group-hover/play:opacity-100'>
-        <div className='absolute top-[35%] left-[60%] brightness-110'>
-          <PlayButton
-            title={title}
-            author={description}
-          />
-        </div>
+    <div className='relative rounded-xl bg-gray-800/25 ease-in-out duration-300 group/play hover:bg-gray-500/50'>
+      <div className='absolute bottom-[20%] right-[3%] opacity-0 duration-300 transition ease-in-out group-hover/play:opacity-100 group-hover/play:-translate-y-4'>
+        <PlayButton
+          title={title}
+          author={description}
+        />
       </div>
 
       <button
