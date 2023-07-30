@@ -45,6 +45,7 @@ export default async function handler(
 
       const albumCover = album.cover_medium;
       const artistName = album.artist.name;
+      const artistPicture = album.artist.picture_small;
 
       // now get the corresponding tracklist
       const tracklistResponse = await axios.get(album.tracklist);
@@ -83,6 +84,7 @@ export default async function handler(
         albumCover,
         tracks,
         artistName,
+        artistPicture,
       });
     } catch (error: any) {
       return res.status(500).json({ message: error.response.data });
