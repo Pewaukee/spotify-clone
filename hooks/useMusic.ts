@@ -1,19 +1,10 @@
 import { useState } from 'react';
 import axios from 'axios';
+import { MusicData } from '@/data/musicData';
 
 export default function useMusic() {
   
-  const [data, setData] = useState<{
-    albumCover: string;
-    tracks: {
-      title: string;
-      duration: number;
-      explicit_lyrics: boolean;
-      track_position: number;
-      preview: string;
-    }[];
-    artistName: string;
-  } | null>(null);
+  const [data, setData] = useState<MusicData>(null);
 
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
