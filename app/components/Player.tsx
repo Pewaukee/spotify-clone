@@ -20,6 +20,8 @@ import RepeatButton from './ControlButtons/RepeatButton';
 import { shuffleIndices } from '@/utils/shuffle';
 import useMusic from '@/hooks/useMusic';
 
+// FIXME: hitting shuffle automatically switches the song
+
 export default function Player() {
   // import context variables
   const { queue, setQueue, volume, pause, currentSong, setCurrentSong, shuffle, repeat } =
@@ -182,7 +184,7 @@ export default function Player() {
   }, [setVolumeofAudio, volume]);
 
   return (
-    <div className='absolute h-[70px] inset-x-0 bottom-0 bg-black z-30'>
+    <div className='fixed h-[70px] inset-x-0 bottom-0 bg-black z-30'>
       <div className='grid grid-cols-3'>
         {/** left side, with picture, title, and artist */}
         <div className='flex w-full h-full'>
