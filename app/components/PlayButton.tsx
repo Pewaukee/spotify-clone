@@ -39,7 +39,7 @@ export default function PlayButton({
       const newQueue: Queue = [];
       const image_src = data.albumCover;
       const artist = data.artistName;
-      data.mp3Previews.forEach((track) => {
+      data.tracks.forEach((track) => {
         newQueue.push({
           title: track.title,
           preview: track.preview,
@@ -58,7 +58,7 @@ export default function PlayButton({
   }, [setQueue, constructQueue]);
 
   return (
-    <div className='absolute top-[35%] left-[60%] brightness-110'>
+    
       <button onClick={handleClick}>
         <Image
           src='/play.svg'
@@ -68,6 +68,5 @@ export default function PlayButton({
           className='rounded-full transform duration-300 ease-in-out hover:scale-110 hover:brightness-125'
         />
       </button>
-    </div>
   );
 }
