@@ -18,13 +18,20 @@ export default function PlaylistCard({
   return (
     <div className='relative inline-block w-[15%] rounded-xl bg-gray-800/25 ease-in-out duration-300 group/play hover:bg-gray-500/50 mr-12'>
       <div className='opacity-0 duration-300 ease-in-out group-hover/play:opacity-100'>
-        <PlayButton
-          title={title}
-          author={description}
-        />
+        <div className='absolute top-[35%] left-[60%] brightness-110'>
+          <PlayButton
+            title={title}
+            author={description}
+          />
+        </div>
       </div>
 
-      <button className='grid-rows-3 rounded-xl' onClick={() => router.push(`/playlist?title=${title}&author=${description}`)}>
+      <button
+        className='grid-rows-3 rounded-xl'
+        onClick={() =>
+          router.push(`/playlist?title=${title}&author=${description}`)
+        }
+      >
         <div className='flex justify-center items-center'>
           <div className='w-[90%] h-[90%]'>
             <Image
