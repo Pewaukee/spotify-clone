@@ -252,6 +252,7 @@ export default function Player() {
               <FastForwardButton
                 setCurrentSong={setCurrentSong}
                 findNextSong={findNextSong}
+                setTime={setTime}
               />
               <RepeatButton />
             </div>

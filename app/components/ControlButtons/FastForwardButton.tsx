@@ -1,13 +1,15 @@
 import { RepeatMode, Song, usePlayer } from '@/app/context/PlayerContext';
 import { FastForward } from 'lucide-react';
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 
 export default function FastForwardButton({
   setCurrentSong,
   findNextSong,
+  setTime,
 }: {
   setCurrentSong: (newCurrentSong: Song) => void;
   findNextSong: () => Song;
+  setTime: Dispatch<SetStateAction<number>>;
 }) {
 
   // for repeat changes on skip
@@ -22,6 +24,7 @@ export default function FastForwardButton({
     if (repeat === RepeatMode.REPEAT_ONE) {
       setRepeat(RepeatMode.REPEAT_ALL);
     }
+    setTime(0); // set the current time to zero when skipping
     setCurrentSong(findNextSong());
   };
 
