@@ -1,3 +1,4 @@
+import { homeAlbums } from '@/data/albums';
 import Navbar from './components/Navbar';
 import Player from './components/Player';
 import PlaylistCard from './components/PlaylistCard';
@@ -5,47 +6,21 @@ import PlayerProvider from './context/PlayerContext';
 
 export default function Home() {
   return (
-    <main className='w-full h-full bg-neutral-700 max-h-screen'>
+    <main className='w-full h-full bg-neutral-700'>
       <Navbar />
-      <div className='mt-10 ml-10 text-2xl'>
+      <div className='flex justify-center items-center text-xl mt-4 ml-2 mr-2 md:mt-10 md:ml-10 md:text-2xl md:items-start md:justify-normal'>
         <h1>Pewaukee&apos;s favorite tracks</h1>
       </div>
       <div className='w-full'>
-        <div className='ml-24 mt-8'>
-          <PlaylistCard
-            image={{ src: '/immunity.png', alt: 'Immunity Clairo Album Cover' }}
-            title='Immunity'
-            description='Clairo'
-          />
-          <PlaylistCard
-            image={{
-              src: '/swimming.png',
-              alt: 'Swimming Mac Miller Album Cover',
-            }}
-            title='Swimming'
-            description='Mac Miller'
-          />
-          <PlaylistCard
-            image={{
-              src: '/free_spirit.png',
-              alt: 'Free Spirit Khalid Album Cover',
-            }}
-            title='Free Spirit'
-            description='Khalid'
-          />
-          <PlaylistCard
-            image={{
-              src: '/change_of_scenery.png',
-              alt: 'Change of Scenery Quinn XCII Album Cover',
-            }}
-            title='Change of Scenery'
-            description='Quinn XCII'
-          />
-          <PlaylistCard
-            image={{ src: '/1999.png', alt: '1999 Rich Brian Album Cover' }}
-            title='1999'
-            description='Rich Brian'
-          />
+        <div className='m-2 pb-[200px] md:m-4 grid grid-cols-3 gap-4 md:grid-cols-5'>
+          {homeAlbums.map((album, index) => (
+            <PlaylistCard
+              key={index}
+              image={album.image}
+              title={album.title}
+              description={album.artist}
+            />
+          ))}
         </div>
       </div>
     </main>
