@@ -6,11 +6,11 @@ import { constructQueue } from '@/utils/constructQueue';
 import { secondsToMinutes } from '@/utils/secondsToMinutes';
 import { Headphones, Play } from 'lucide-react';
 import Link from 'next/link';
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useState } from 'react';
-import useDeepCompareEffect from 'use-deep-compare-effect';
 
 export default function Song({
+  albumTitle,
   track_position,
   title,
   explicit_lyrics,
@@ -18,6 +18,7 @@ export default function Song({
   duration,
   preview,
 }: {
+  albumTitle: string;
   track_position: number;
   title: string;
   explicit_lyrics: boolean;
@@ -31,34 +32,37 @@ export default function Song({
   const { data, loading, fetchMusic } = useMusic();
 
   const handleClick = async () => {
-    // TODO: have to pause if the song is already playing
-    // and play new song if queue is already populated
-    console.log('handle click in song.tsx')
-    // set the queue to the correct song defined by the preview
-    await fetchMusic({ // this will trigger a change in the data variable
-      title: title,
-      artist: artistName,
-    }); 
+    // check if the queue already has the song
+    let index: number = -1;
+    if (queue) {
+      index = queue.findIndex((song) => {
+        if (song) return song.preview === preview;
+        return false;
+      });
+    }
+    // if the index is found, just set the song
+    if (index !== -1) setCurrentSong(queue[index]);
+    else {
+      // the clicked song is nowhere in the queue, fetch a new queue
+      await fetchMusic({
+        // trigger a change in the data variable for below useEffect
+        title: albumTitle,
+        artist: artistName,
+      });
+    }
   };
 
-  // if the queue changes, then we need to update the current song
-  // to match the button we clicked
-  // TODO: this is not working correctly, check the print logs
-  useDeepCompareEffect(() => {
-    console.log('queue changed in song.tsx')
-    if (queue) {
-      setCurrentSong(queue[track_position - 1]);
-    }
-  }, [queue]);
-
   useEffect(() => {
-    constructQueue(data).then(queue => {
-      console.log('queue', queue);
-      setQueue(queue)
-    }).catch(err => {
-      console.log('error in constructQueue', err)
-    });
-  }, [data]);
+    constructQueue(data)
+      .then((queue) => {
+        console.log('queue in song.tsx', queue);
+        setQueue(queue);
+        setCurrentSong(queue[track_position - 1]);
+      })
+      .catch((err) => {
+        console.log('error in constructQueue', err);
+      });
+  }, [setQueue, data]);
 
   return (
     <div
@@ -71,11 +75,20 @@ export default function Song({
           <button onClick={handleClick}>
             <Play size={16} />
           </button>
+        ) : currentSong?.title === title ? (
+          <Headphones
+            size={16}
+            className='text-green-400'
+          />
         ) : (
-          currentSong?.title === title ? <Headphones size={16} className='text-green-400' /> : track_position
+          track_position
         )}
       </div>
-      <div className={`flex flex-col col-span-5 self-center ${currentSong?.title === title ? 'text-green-400': ''}`}>
+      <div
+        className={`flex flex-col col-span-5 self-center ${
+          currentSong?.title === title ? 'text-green-400' : ''
+        }`}
+      >
         <p>{title}</p>
         <p className='text-gray-400 flex flex-row items-center'>
           {explicit_lyrics && (

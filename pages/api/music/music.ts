@@ -42,7 +42,8 @@ export default async function handler(
           .status(404)
           .json({ message: 'Album not found with corresponding artist' });
       }
-
+      
+      const albumName = album.title;
       const albumCover = album.cover_medium;
       const artistName = album.artist.name;
       const artistPicture = album.artist.picture_small;
@@ -81,6 +82,7 @@ export default async function handler(
       });
 
       return res.json({
+        albumName,
         albumCover,
         tracks,
         artistName,

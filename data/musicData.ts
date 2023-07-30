@@ -1,5 +1,6 @@
 // export the type according to the music data to be used among the app
 export type MusicData = {
+  albumName: string;
   albumCover: string;
   tracks: {
     title: string;

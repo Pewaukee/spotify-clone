@@ -20,6 +20,7 @@ export default function SongTable({ data }: { data: MusicData }) {
             return (
               <Song
                 key={index}
+                albumTitle={data.albumName}
                 track_position={track.track_position}
                 title={track.title}
                 explicit_lyrics={track.explicit_lyrics}

@@ -13,7 +13,7 @@ export default function PlayButton({
   title: string;
   author: string;
 }) {
-  const { queue, setQueue, clearQueue } = usePlayer();
+  const { queue, setQueue, setCurrentSong, randomIndices, shuffle } = usePlayer();
   const { data, loading, error, fetchMusic } = useMusic();
 
   const handleClick = async () => {
@@ -29,6 +29,7 @@ export default function PlayButton({
     constructQueue(data).then(queue => {
       console.log('queue', queue);
       setQueue(queue)
+      setCurrentSong(shuffle ? queue[randomIndices[0]]: queue[0]);
     }).catch(err => {
       console.log('error in constructQueue', err)
     });

@@ -22,16 +22,24 @@ import useMusic from '@/hooks/useMusic';
 
 export default function Player() {
   // import context variables
-  const { queue, setQueue, volume, pause, currentSong, setCurrentSong, shuffle, repeat } =
-    usePlayer();
+  const {
+    queue,
+    setQueue,
+    volume,
+    pause,
+    currentSong,
+    setCurrentSong,
+    shuffle,
+    repeat,
+    randomIndices,
+    setRandomIndices,
+  } = usePlayer();
   // use loading from api hook
   const { loading } = useMusic();
   // time state for the slider
   const [time, setTime] = useState<number>(0);
   // keep track of the current <audio> element
   const [audioFile, setAudioFile] = useState<HTMLAudioElement | null>(null);
-  // keep track of the random indices for shuffle
-  const [randomIndices, setRandomIndices] = useState<number[]>([]);
 
   // callback to find first song in queue
   const firstSong = useCallback((): Song => {
@@ -116,10 +124,10 @@ export default function Player() {
     if (audioFile) pause ? audioFile.pause() : audioFile.play();
   }, [pause, audioFile]);
 
-  // useEffect with lists runs infinitely, so use JSON.stringify
+  // useEffect with lists runs infinitely
   // useDeepCompareEffect actually compares the contents of the list
   useDeepCompareEffect(() => {
-    console.log('usedeepcompareeffect 1 for queue')
+    console.log('usedeepcompareeffect 1 for queue', queue);
     // clear whatever music was playing before, get a fresh start
     setAudioFile(null);
     if (queue.length > 0) {
@@ -128,14 +136,14 @@ export default function Player() {
   }, [queue, setRandomIndices, shuffleIndices]);
 
   // when the randomIndices list changes, update the current song
-  useDeepCompareEffect(() => {
-    console.log('usedeepcompareeffect 2 for random indices')
-    setCurrentSong(firstSong());
-  }, [randomIndices, setCurrentSong]);
+  // useDeepCompareEffect(() => {
+  //   console.log('usedeepcompareeffect 2 for random indices', randomIndices)
+  //   setCurrentSong(firstSong());
+  // }, [randomIndices, setCurrentSong]);
 
   // if the current song changes, only then get the audio file
   useEffect(() => {
-    console.log('useeffect 1 for current song')
+    console.log('useeffect 1 for current song', currentSong);
     // first pause the currently playing audio file
     if (audioFile) {
       audioFile.pause();
@@ -149,8 +157,7 @@ export default function Player() {
   // event that adds event listeners to the <audio> element
   // only when the audioFile changes
   useEffect(() => {
-    console.log('useeffect 2 for audiofile')
-    console.log('audiofile', audioFile)
+    console.log('useeffect 2 for audiofile', audioFile);
     // add the event listeners when the component mounts
     if (audioFile) {
       // should independently add event listeners to each <audio> element
@@ -173,7 +180,7 @@ export default function Player() {
    * new existing audio file
    */
   useEffect(() => {
-    console.log('useeffect 3 for pause')
+    console.log('useeffect 3 for pause');
     setPauseofAudio();
   }, [setPauseofAudio, audioFile?.src, pause]);
 
@@ -182,7 +189,7 @@ export default function Player() {
    * we need to update the only the volume of the current audio clip
    */
   useEffect(() => {
-    console.log('useeffect 4 for volume')
+    console.log('useeffect 4 for volume');
     // set the volume if the volume changes
     setVolumeofAudio();
   }, [setVolumeofAudio, volume]);
