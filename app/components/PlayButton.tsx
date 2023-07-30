@@ -4,6 +4,7 @@ import useMusic from '@/hooks/useMusic';
 import Image from 'next/image';
 import React, { useCallback, useEffect } from 'react';
 import { Queue, usePlayer } from '../context/PlayerContext';
+import { constructQueue } from '@/utils/constructQueue';
 
 export default function PlayButton({
   title,
@@ -22,43 +23,18 @@ export default function PlayButton({
     });
   };
 
-  // construct a queue from the data variable
-  const constructQueue = useCallback((): Queue => {
-    // construct the new list based on the following type sig
-    /**
-     * type Song = {
-     * title: string;
-     * preview: string;
-     * image_src: string;
-     * artist: string;
-     * } | null;
-     * 
-     * type Queue = Song[];
-     */
-    if (data) {
-      const newQueue: Queue = [];
-      const image_src = data.albumCover;
-      const artist = data.artistName;
-      data.tracks.forEach((track) => {
-        newQueue.push({
-          title: track.title,
-          preview: track.preview,
-          image_src: image_src,
-          artist: artist,
-        });
-      });
-      return newQueue;
-    }
-    return [];
-  }, [setQueue, data]);
-
   // on a change of data, set the queue with the function
   useEffect(() => {
-    setQueue(constructQueue());
-  }, [setQueue, constructQueue]);
+    // use promises to ensure that queue is set properly without 'race conditions'
+    constructQueue(data).then(queue => {
+      console.log('queue', queue);
+      setQueue(queue)
+    }).catch(err => {
+      console.log('error in constructQueue', err)
+    });
+  }, [setQueue, data]);
 
   return (
-    
       <button onClick={handleClick}>
         <Image
           src='/play.svg'
