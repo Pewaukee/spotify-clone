@@ -20,8 +20,6 @@ import RepeatButton from './ControlButtons/RepeatButton';
 import { shuffleIndices } from '@/utils/shuffle';
 import useMusic from '@/hooks/useMusic';
 
-// FIXME: hitting shuffle automatically switches the song
-
 export default function Player() {
   // import context variables
   const { queue, setQueue, volume, pause, currentSong, setCurrentSong, shuffle, repeat } =
@@ -121,6 +119,7 @@ export default function Player() {
   // useEffect with lists runs infinitely, so use JSON.stringify
   // useDeepCompareEffect actually compares the contents of the list
   useDeepCompareEffect(() => {
+    console.log('usedeepcompareeffect 1 for queue')
     // clear whatever music was playing before, get a fresh start
     setAudioFile(null);
     if (queue.length > 0) {
@@ -130,11 +129,13 @@ export default function Player() {
 
   // when the randomIndices list changes, update the current song
   useDeepCompareEffect(() => {
+    console.log('usedeepcompareeffect 2 for random indices')
     setCurrentSong(firstSong());
-  }, [randomIndices, setCurrentSong, firstSong]);
+  }, [randomIndices, setCurrentSong]);
 
   // if the current song changes, only then get the audio file
   useEffect(() => {
+    console.log('useeffect 1 for current song')
     // first pause the currently playing audio file
     if (audioFile) {
       audioFile.pause();
@@ -148,6 +149,7 @@ export default function Player() {
   // event that adds event listeners to the <audio> element
   // only when the audioFile changes
   useEffect(() => {
+    console.log('useeffect 2 for audiofile')
     console.log('audiofile', audioFile)
     // add the event listeners when the component mounts
     if (audioFile) {
@@ -171,6 +173,7 @@ export default function Player() {
    * new existing audio file
    */
   useEffect(() => {
+    console.log('useeffect 3 for pause')
     setPauseofAudio();
   }, [setPauseofAudio, audioFile?.src, pause]);
 
@@ -179,6 +182,7 @@ export default function Player() {
    * we need to update the only the volume of the current audio clip
    */
   useEffect(() => {
+    console.log('useeffect 4 for volume')
     // set the volume if the volume changes
     setVolumeofAudio();
   }, [setVolumeofAudio, volume]);
