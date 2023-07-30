@@ -1,5 +1,6 @@
 'use client';
 
+import { usePlayer } from '@/app/context/PlayerContext';
 import { secondsToMinutes } from '@/utils/secondsToMinutes';
 import { Play } from 'lucide-react';
 import Link from 'next/link';
@@ -23,26 +24,28 @@ export default function Song({
 }) {
   const [isHovered, setIsHovered] = useState(false);
 
+  const { queue } = usePlayer();
+
+  const handleClick = () => {
+    // set the queue to the correct song defined by the preview
+  };
+
   return (
     <div
-      className='grid grid-cols-10 rounded-md hover:bg-gray-400/50'
+      className='grid grid-cols-10 rounded-md pb-2 pt-2 hover:bg-gray-400/50'
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       <div className='col-span-1 flex items-center pl-[10px]'>
-        <p>
-          {isHovered ? (
-            <button
-            onClick={() => console.log('play')}
-            >
-              <Play size={16}/>
-            </button>
-          ) : (
-            track_position
-          )}
-        </p>
+        {isHovered ? (
+          <button onClick={() => handleClick}>
+            <Play size={16} />
+          </button>
+        ) : (
+          track_position
+        )}
       </div>
-      <div className='flex flex-col col-span-5'>
+      <div className='flex flex-col col-span-5 self-center'>
         <p>{title}</p>
         <p className='text-gray-400 flex flex-row items-center'>
           {explicit_lyrics && (

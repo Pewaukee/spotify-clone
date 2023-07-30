@@ -65,7 +65,7 @@ export default function PlayButton({
           alt='Play Button'
           width={75}
           height={75}
-          className='rounded-full transform duration-300 ease-in-out hover:scale-110 hover:brightness-125'
+          className='rounded-full transform duration-300 ease-in-out brightness-125 hover:scale-110 hover:brightness-150'
         />
       </button>
   );
