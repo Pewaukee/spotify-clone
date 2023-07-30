@@ -17,7 +17,7 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <body>
-        <main className='bg-neutral-700 min-h-screen'>
+        <main className='bg-neutral-700 w-full min-h-screen'>
           <PlayerProvider>
             {children}
 
