@@ -15,7 +15,7 @@ export default function LibraryItem({
   type: 'Album' | 'Playlist';
 }) {
   return (
-    <div className='relative w-full h-full grid grid-cols-2 rounded-lg hover:bg-gray-400/25'>
+    <div className='relative w-full h-full grid grid-cols-2 rounded-lg bg-black hover:bg-black/25'>
       <div className='flex items-center justify-center p-2'>
         {/** render a square image with the AspectRatio element */}
         <AspectRatio.Root ratio={1}>

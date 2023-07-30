@@ -12,16 +12,16 @@ export default function ScrollMenu({
       src: string;
       alt: string;
     };
-    name: string;
-    creator: string;
+    title: string;
+    artist: string;
     type: 'Album' | 'Playlist';
   }[];
 }) {
   return (
-    <ScrollArea.Root className='w-full h-[200px] border-md overflow-hidden shadow-md bg-white'>
+    <ScrollArea.Root className='w-full h-[200px] border-md overflow-hidden shadow-md bg-gray-800'>
       <ScrollArea.Viewport className='w-full h-full border-md '>
         <div style={{ padding: '15px 20px' }}>
-          <div className='text-white'>Playlists</div>
+          <div className='text-white mb-[10px]'>Playlists</div>
           {playlists.map((playlist) => {
             return (
               <LibraryItem
@@ -30,8 +30,8 @@ export default function ScrollMenu({
                   src: playlist.image.src,
                   alt: playlist.image.alt,
                 }}
-                name={playlist.name}
-                creator={playlist.creator}
+                name={playlist.title}
+                creator={playlist.artist}
                 type={playlist.type}
               />
             );

@@ -8,6 +8,7 @@ import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import ScrollMenu from './ScrollMenu';
+import { homeAlbums } from '@/data/albums';
 
 export default function NavigationMenuItem() {
   // init the pathname for additional underline styling based on the current page
@@ -45,53 +46,7 @@ export default function NavigationMenuItem() {
             <ul className='p-[10px] mt-[20px] list-none flex flex-col justify-center items-center bg-black rounded-xl border-4 border-solid border-white'>
               {/** TODO: convert to server component with children prop passing */}
               <ScrollMenu
-                playlists={[
-                  {
-                    image: {
-                      src: '/immunity.png',
-                      alt: 'Immunity Album Cover',
-                    },
-                    name: 'Immunity',
-                    creator: 'Clairo',
-                    type: 'Album',
-                  },
-                  {
-                    image: {
-                      src: '/swimming.png',
-                      alt: 'Swimming Album Cover',
-                    },
-                    name: 'Swimming',
-                    creator: 'Mac Miller',
-                    type: 'Album',
-                  },
-                  {
-                    image: {
-                      src: '/free_spirit.png',
-                      alt: 'Free Spirit Album Cover',
-                    },
-                    name: 'Free Spirit',
-                    creator: 'Khalid',
-                    type: 'Album',
-                  },
-                  {
-                    image: {
-                      src: '/change_of_scenery.png',
-                      alt: 'Change of Scenery Album Cover',
-                    },
-                    name: 'Change of Scenery',
-                    creator: 'Quinn XCII',
-                    type: 'Album',
-                  },
-                  {
-                    image: {
-                      src: '/1999.png',
-                      alt: '1999 Album Cover',
-                    },
-                    name: '1999',
-                    creator: 'Rich Brian',
-                    type: 'Album',
-                  }
-                ]}
+                playlists={homeAlbums}
               />
               <NavigationMenu.Link
                 asChild
