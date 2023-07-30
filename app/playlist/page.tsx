@@ -116,15 +116,15 @@ export default function Playlist() {
 
 // dynamic metadata from https://nextjs.org/docs/app/api-reference/functions/generate-metadata#generatemetadata-function
 // only generates metadata for a local layout.tsx file
-export async function generateMetadata({
-  params,
-}: {
-  params: {
-    slug: string;
-  };
-}) {
-  return {
-    title: params.slug,
-    description: 'A clone of the popluar music streaming service.',
-  };
-}
+// export async function generateMetadata({
+//   params,
+// }: {
+//   params: {
+//     slug: string;
+//   };
+// }) {
+//   return {
+//     title: params.slug,
+//     description: 'A clone of the popluar music streaming service.',
+//   };
+// }
