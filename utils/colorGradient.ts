@@ -2,57 +2,6 @@
 // source:
 // https://dev.to/producthackers/creating-a-color-palette-with-javascript-44ip
 
-import { MusicData } from '@/data/musicData';
-
-function quantization(
-  rgbValues: {
-    r: number;
-    g: number;
-    b: number;
-  }[],
-  depth: number
-): {
-  r: number;
-  g: number;
-  b: number;
-}[] {
-  const MAX_DEPTH = 4; // recursion depth
-
-  // Base case
-  if (depth === MAX_DEPTH || rgbValues.length === 0) {
-    const color = rgbValues.reduce(
-      (prev, curr) => {
-        prev.r += curr.r;
-        prev.g += curr.g;
-        prev.b += curr.b;
-
-        return prev;
-      },
-      {
-        r: 0,
-        g: 0,
-        b: 0,
-      }
-    );
-
-    color.r = Math.round(color.r / rgbValues.length);
-    color.g = Math.round(color.g / rgbValues.length);
-    color.b = Math.round(color.b / rgbValues.length);
-
-    return [color];
-  }
-  const componentToSortBy = findBiggestColorRange(rgbValues);
-  rgbValues.sort((p1, p2) => {
-    return p1[componentToSortBy] - p2[componentToSortBy];
-  });
-
-  const mid = rgbValues.length / 2;
-  return [
-    ...quantization(rgbValues.slice(0, mid), depth + 1),
-    ...quantization(rgbValues.slice(mid + 1), depth + 1),
-  ];
-}
-
 const findBiggestColorRange = (
   rgbValues: {
     r: number;
@@ -91,12 +40,62 @@ const findBiggestColorRange = (
     return 'b';
   }
 };
-
-function buildRgb(imageData: ImageData): {
+export const quantization = (
+  rgbValues: {
+    r: number;
+    g: number;
+    b: number;
+  }[],
+  depth: number
+): {
   r: number;
   g: number;
   b: number;
-}[] {
+}[] => {
+  const MAX_DEPTH = 4; // recursion depth
+
+  // Base case
+  if (depth === MAX_DEPTH || rgbValues.length === 0) {
+    const color = rgbValues.reduce(
+      (prev, curr) => {
+        prev.r += curr.r;
+        prev.g += curr.g;
+        prev.b += curr.b;
+
+        return prev;
+      },
+      {
+        r: 0,
+        g: 0,
+        b: 0,
+      }
+    );
+
+    color.r = Math.round(color.r / rgbValues.length);
+    color.g = Math.round(color.g / rgbValues.length);
+    color.b = Math.round(color.b / rgbValues.length);
+
+    return [color];
+  }
+  const componentToSortBy = findBiggestColorRange(rgbValues);
+  rgbValues.sort((p1, p2) => {
+    return p1[componentToSortBy] - p2[componentToSortBy];
+  });
+
+  const mid = rgbValues.length / 2;
+  return [
+    ...quantization(rgbValues.slice(0, mid), depth + 1),
+    ...quantization(rgbValues.slice(mid + 1), depth + 1),
+  ];
+};
+
+export const buildRgb = (
+  imageData: ImageData
+): {
+  r: number;
+  g: number;
+  b: number;
+}[] => {
   const rgbValues = [];
   for (let i = 0; i < imageData.data.length; i += 4) {
     rgbValues.push({
@@ -106,15 +105,15 @@ function buildRgb(imageData: ImageData): {
     });
   }
   return rgbValues;
-}
+};
 
-function findAverage(
+export const findAverage = (
   quantized: {
     r: number;
     g: number;
     b: number;
   }[]
-) {
+) => {
   const rgb = quantized.reduce(
     (
       prev: {
@@ -144,45 +143,49 @@ function findAverage(
   rgb.g = Math.round(rgb.g / quantized.length);
   rgb.b = Math.round(rgb.b / quantized.length);
   return rgb;
-}
+};
 
-function componentToHex(c: number) {
-  var hex = c.toString(16);
-  return hex.length == 1 ? '0' + hex : hex;
-}
+const componentToHex = (c: number) => {
+  const hex = c.toString(16);
+  return hex.length === 1 ? '0' + hex : hex;
+};
 
-function rgbToHex(r: number, g: number, b: number) {
+export const rgbToHex = (r: number, g: number, b: number) => {
   return '#' + componentToHex(r) + componentToHex(g) + componentToHex(b);
-}
+};
 
-export function findGradient(data: MusicData): Promise<string> {
-  // if any error occurs, just return black
-  return new Promise((resolve, reject) => {
-    if (data) {
-      const img = new Image();
-      img.src = data.albumCover;
-      img.crossOrigin = 'Anonymous';
-      img.onload = () => {
-        const canvas = document.createElement('canvas');
-        canvas.width = img.width;
-        canvas.height = img.height;
-        const ctx = canvas.getContext('2d');
-        ctx?.drawImage(img, 0, 0);
-        const imageData = ctx?.getImageData(0, 0, canvas.width, canvas.height);
-        if (imageData) {
-          const rgb = buildRgb(imageData);
-          const quantized = quantization(rgb, 0);
-          const average = findAverage(quantized);
-          const averageColor = rgbToHex(average.r, average.g, average.b);
-          resolve(averageColor);
-        } else {
-          resolve('#000000');
-        }
-      };
-      img.onerror = () => {
-        resolve('#000000');
-      };
-    }
-    resolve('#000000');
-  });
-}
+// export function findGradient(data: MusicData): Promise<string> {
+//   // if any error occurs, just return black
+//   return new Promise((resolve, reject) => {
+//     if (data) {
+//       const img = new Image();
+//       img.src = data.albumCover;
+//       img.crossOrigin = 'Anonymous';
+//       img.onload = () => {
+//         const canvas = document.createElement('canvas');
+//         canvas.width = img.width;
+//         canvas.height = img.height;
+//         const ctx = canvas.getContext('2d');
+//         ctx?.drawImage(img, 0, 0);
+//         const imageData = ctx?.getImageData(0, 0, canvas.width, canvas.height);
+//         if (imageData) {
+//           const rgb = buildRgb(imageData);
+//           const quantized = quantization(rgb, 0);
+//           const average = findAverage(quantized);
+//           const averageColor = rgbToHex(average.r, average.g, average.b);
+//           console.log('averageColor', averageColor)
+//           resolve(averageColor);
+//         } else {
+//           console.error('imageData is null');
+//           resolve('#ffffff');
+//         }
+//       };
+//       img.onerror = () => {
+//         console.error('error loading image');
+//         resolve('#ffffff');
+//       };
+//     }
+//     console.error('data is null');
+//     resolve('#ffffff');
+//   });
+// }

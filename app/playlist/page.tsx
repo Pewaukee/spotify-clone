@@ -4,10 +4,17 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import useMusic from '@/hooks/useMusic';
 import usePicture from '@/hooks/getPicture';
 import * as AspectRatio from '@radix-ui/react-aspect-ratio';
-import { findGradient } from '@/utils/colorGradient';
+import {
+  quantization,
+  buildRgb,
+  findAverage,
+  rgbToHex,
+} from '@/utils/colorGradient';
 import NextImage from 'next/image';
 import PlayButton from '../components/PlayButton';
 import SongTable from './components/SongTable';
+import { MusicData } from '@/data/musicData';
+import { secondsToMinutes } from '@/utils/secondsToMinutes';
 
 // keep title and author outside the re-rendering of playlist
 let title = '';
@@ -24,6 +31,7 @@ export default function Playlist() {
   const [averageColor, setAverageColor] = useState('#ffffff');
 
   const handleLoad = useCallback(async () => {
+    console.log('running handleload function');
     await fetchMusic({
       title: title,
       artist: author,
@@ -42,27 +50,66 @@ export default function Playlist() {
     } else handleLoad(); // fetch the tracks
   }, []); // run upon mounting, only run once
 
+  // find a color gradient to match the album cover
+  // source:
+  // https://dev.to/producthackers/creating-a-color-palette-with-javascript-44ip
+
+  const findGradient = useCallback((data: MusicData) => {
+    // if any error occurs, just return black
+      console.log('data in findGradient', data);
+      if (data !== null) {
+        const img = new Image();
+        img.src = data.albumCover;
+        console.log('img.src' + img.src)
+        img.crossOrigin = 'Anonymous';
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          canvas.width = img.width;
+          canvas.height = img.height;
+          const ctx = canvas.getContext('2d');
+          ctx?.drawImage(img, 0, 0);
+          const imageData = ctx?.getImageData(
+            0,
+            0,
+            canvas.width,
+            canvas.height
+          );
+          if (imageData) {
+            const rgb = buildRgb(imageData);
+            const quantized = quantization(rgb, 0);
+            const average = findAverage(quantized);
+            const averageColor = rgbToHex(average.r, average.g, average.b);
+            console.log('averageColor', averageColor);
+            setAverageColor(averageColor);
+          } else {
+            console.error('imageData is null');
+          }
+        };
+        img.onerror = () => {
+          console.error('error in img.onload');
+        };
+      }
+  }, [buildRgb, quantization, findAverage, rgbToHex, data, setAverageColor]);
+
   useEffect(() => {
-    findGradient(data)
-      .then((newColor) => {
-        console.log(newColor);
-        setAverageColor(newColor);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [data]); // TODO: won't render averageColor in classname
+    console.log('useEffect in playlist, data:', data);
+    if (data) findGradient(data);
+  }, [data, findGradient]);
 
   return (
-    <div className='w-full h-min-screen bg-gradient-to-b from-white to-black to-60%'>
-      {/** back and forward buttons */}
-      <div
-        className={`p-4 flex flex-row`}
-      >
+    <div
+      className='w-full h-min-screen'
+      // tailwind does not support dynamic class names,
+      // https://tailwindcss.com/docs/content-configuration#dynamic-class-names
+      style={{
+        background: `linear-gradient(to bottom, ${averageColor}, black 60%)`,
+      }}
+    >
+      {/** TODO: back and forward buttons */}
+      <div className={`p-4 flex flex-row`}>
         {/** use ${averageColor} */}
         <div className='flex mt-12 justify-self-left w-[20%]'>
-          {
-          data ? (
+          {data ? (
             <AspectRatio.Root ratio={1}>
               <img
                 src={data.albumCover}
@@ -71,8 +118,7 @@ export default function Playlist() {
                 id='albumCover'
               />
             </AspectRatio.Root>
-          ) : 
-          (
+          ) : (
             picture && (
               <img
                 src={picture.src}
@@ -99,6 +145,16 @@ export default function Playlist() {
                 />
               )}
               <p className='ml-[4px]'>{author}</p>
+              <p className='ml-[10px]'>
+                {data ? data.tracks.length : 0} songs,
+              </p>
+              <p className='ml-[4px]'>
+                {data
+                  ? secondsToMinutes(
+                      data.tracks.reduce((acc, e) => acc + e.duration, 0)
+                    )
+                  : 0}
+              </p>
             </div>
           </div>
         </div>
