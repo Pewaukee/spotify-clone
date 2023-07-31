@@ -1,6 +1,21 @@
+.CaretDown { 
+  position: relative;
+  top: 1px;
+  transition: transform 300ms ease-in-out;
+}
+
 /* for conditionally checking based on state of parent container */
 [data-state='open'] > .CaretDown {
   transform: rotate(-180deg);
+}
+
+.NavigationMenuViewport {
+  position: relative;
+  transform-origin: top center;
+  width: 100%;
+  border-radius: 0.75rem;
+  transition-duration: 300;
+  transition-timing-function: ease;
 }
 
 /* checking parent containers to either scale in or out when selected */
