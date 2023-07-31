@@ -20,7 +20,7 @@ export default function ScrollMenu({
   return (
     <ScrollArea.Root className='w-full h-[200px] border-md overflow-hidden shadow-md bg-gray-800'>
       <ScrollArea.Viewport className='w-full h-full border-md '>
-        <div style={{ padding: '15px 20px' }}>
+        <div className='pt-[15px] pb-[15px] pl-[5px] pr-[5px]'>
           <div className='text-white mb-[10px]'>Playlists</div>
           {playlists.map((playlist) => {
             return (
