@@ -19,6 +19,7 @@ export default function useMusic() {
     artist: string;
   }) => {
     setLoading(true);
+    console.log('loading in useMusic', loading)
     try {
         const response = await axios.get(`${baseUrl}/api/music/music`, {
             params: {
@@ -31,6 +32,7 @@ export default function useMusic() {
       setData(response.data);
       setLoading(false);
     } catch (error: any) {
+      setLoading(false);
       console.error(error);
       setError(error);
     }
