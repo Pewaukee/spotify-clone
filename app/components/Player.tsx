@@ -217,28 +217,25 @@ export default function Player() {
             </>
           ) : (
             <>
-              <Skeleton
-                variant='rectangular'
-                width={50}
-                height={50}
-                animation={loading ? 'pulse' : false}
-                className='rounded-md ml-4 mt-[10px] mb-[10px] bg-gray-600'
-              />
-              <div className='flex flex-col ml-2 justify-center'>
+              <div className='flex flex-row mt-[10px] items-center'>
                 <Skeleton
-                  variant='text'
-                  width={100}
-                  height={20}
-                  animation={loading ? 'pulse' : false}
-                  className='rounded-md ml-2 bg-gray-600'
+                  variant='rounded'
+                  width={30}
+                  height={30}
+                  className='ml-2 bg-gray-600'
                 />
-                <Skeleton
-                  variant='text'
-                  width={80}
-                  height={20}
-                  animation={loading ? 'pulse' : false}
-                  className='rounded-md ml-2 bg-gray-600'
-                />
+                <div className='flex flex-col ml-1'>
+                  <Skeleton
+                    width={60}
+                    height={20}
+                    className='bg-gray-600'
+                  />
+                  <Skeleton
+                    width={60}
+                    height={20}
+                    className='bg-gray-600'
+                  />
+                </div>
               </div>
             </>
           )}
