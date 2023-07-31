@@ -43,12 +43,6 @@ export default function PlaylistCard({
           </div>
         </div>
 
-        <div className='text-sm'>
-          <h2 className='text-white font-semibold ml-[10%] pt-4 mr-[10%] truncate'>
-            {title}
-          </h2>
-        </div>
-
         <DescriptionText
           title={title}
           description={description}

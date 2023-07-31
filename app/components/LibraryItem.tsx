@@ -40,7 +40,7 @@ export default function LibraryItem({
         </div>
         <div className='text-[10px] lg:text-sm grid grid-rows-2 flex justify-center items-center ml-[10%] mr-[10%]'>
           <div>
-            <h1>{name}</h1>
+            <h1 className='line-clamp-2'>{name}</h1>
           </div>
           <div className='grid grid-cols-2 flex justify-content items-center'>
             <div className='flex justify-content items-center text-gray-400 opactity-50'>
@@ -53,7 +53,7 @@ export default function LibraryItem({
             </div>
             {/** or other options */}
             <div className='flex justify-center items-center'>
-              <h2 className='text-[8px] sm:text-[10px] lg:text-sm ml-0 md:ml-[2px] lg:ml-[5px] decoration-solid hover:underline'>
+              <h2 className='line-clamp-2 text-[8px] sm:text-[10px] lg:text-sm ml-0 md:ml-[2px] lg:ml-[5px] decoration-solid hover:underline'>
                 {creator}
               </h2>
             </div>

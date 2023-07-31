@@ -2,7 +2,6 @@ import { homeAlbums } from '@/data/albums';
 import Navbar from './components/Navbar';
 import Player from './components/Player';
 import PlaylistCard from './components/PlaylistCard';
-import PlayerProvider from './context/PlayerContext';
 
 export default function Home() {
   return (

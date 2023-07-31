@@ -36,7 +36,7 @@ export const homeAlbums: {
   },
   {
     image: {
-      src: '/albumCovers/change_of_scenery.png',
+      src: '/albumCovers/change_of_scenery.jpg',
       alt: 'Change of Scenery Quinn XCII Album Cover',
     },
     title: 'Change of Scenery',
@@ -63,7 +63,7 @@ export const homeAlbums: {
   },
   {
     image: {
-      src: '/albumCovers/come_home_the_kids_miss_you.png',
+      src: '/albumCovers/come_home_kids_miss_you.png',
       alt: 'Come Home The Kids Miss You Jack Harlow Album Cover',
     },
     title: 'Come Home The Kids Miss You',
