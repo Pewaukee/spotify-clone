@@ -98,20 +98,20 @@ export default function Song({
           currentSong?.title === title ? 'text-green-400' : ''
         }`}
       >
-        <p>{title}</p>
-        <p className='text-gray-400 flex flex-row items-center'>
+        <p className='text-sm md:text-lg line-clamp-1'>{title}</p>
+        <p className='text-gray-400 flex flex-row items-center text-xs md:text-[14px]'>
           {explicit_lyrics && (
-            <span className='w-[15px] h-[15px] bg-white text-gray-500 rounded-sm flex justify-center items-center text-xs mr-[5px]'>
+            <span className='w-[15px] h-[15px] bg-gray-200 text-gray-500 rounded-sm flex justify-center items-center text-xs mr-[5px]'>
               E
             </span>
           )}
           {artistName}
         </p>
       </div>
-      <div className='col-span-2 flex items-center'>
+      <div className='col-span-2 flex items-center text-sm md:text-md'>
         {secondsToMinutes(duration)}
       </div>
-      <div className='col-span-2 flex items-center'>
+      <div className='col-span-2 underline underline-offset-2 flex items-center text-sm md:text-md'>
         <Link href={preview}>Link</Link>
       </div>
     </div>

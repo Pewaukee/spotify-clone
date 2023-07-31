@@ -13,7 +13,7 @@ export default function SongTable({ data }: { data: MusicData }) {
   return (
     <>
       {data && (
-        <div className={`ml-[5%] mr-[5%] pb-[100px] grid grid-rows-${length}`}>
+        <div className='md:ml-[5%] md:mr-[5%] pb-[100px]'>
           <Header />
           {data.tracks.map((track, index) => {
             console.log(track.explicit_lyrics);

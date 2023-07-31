@@ -54,13 +54,14 @@ export default function Playlist() {
   // source:
   // https://dev.to/producthackers/creating-a-color-palette-with-javascript-44ip
 
-  const findGradient = useCallback((data: MusicData) => {
-    // if any error occurs, just return black
+  const findGradient = useCallback(
+    (data: MusicData) => {
+      // if any error occurs, just return black
       console.log('data in findGradient', data);
       if (data !== null) {
         const img = new Image();
         img.src = data.albumCover;
-        console.log('img.src' + img.src)
+        console.log('img.src' + img.src);
         img.crossOrigin = 'Anonymous';
         img.onload = () => {
           const canvas = document.createElement('canvas');
@@ -89,7 +90,9 @@ export default function Playlist() {
           console.error('error in img.onload');
         };
       }
-  }, [buildRgb, quantization, findAverage, rgbToHex, data, setAverageColor]);
+    },
+    [buildRgb, quantization, findAverage, rgbToHex, data, setAverageColor]
+  );
 
   useEffect(() => {
     console.log('useEffect in playlist, data:', data);
@@ -106,9 +109,9 @@ export default function Playlist() {
       }}
     >
       {/** TODO: back and forward buttons */}
-      <div className={`p-4 flex flex-row`}>
+      <div className='p-4 flex flex-col md:flex-row justify-center md:justify-normal items-center'>
         {/** use ${averageColor} */}
-        <div className='flex mt-12 justify-self-left w-[20%]'>
+        <div className='flex mt-12 md:justify-self-left w-[70%] md:w-[20%] mb-6 md:mb-0'>
           {data ? (
             <AspectRatio.Root ratio={1}>
               <img
@@ -119,43 +122,38 @@ export default function Playlist() {
               />
             </AspectRatio.Root>
           ) : (
-            picture && (
-              <img
-                src={picture.src}
-                alt='random picture in case data is null'
-                width={500}
-                height={500}
+            <AspectRatio.Root ratio={1}>
+              <NextImage
+                src='/music_placeholder.png'
+                alt='Placeholder for Album Cover'
+                fill
+                sizes='100vw'
               />
-            )
+            </AspectRatio.Root>
           )}
         </div>
-        <div className='relative w-full flex flex-col ml-6'>
-          <div className='absolute top-[40%] flex items-center'>
-            <h1 className='text-6xl font-bold text-white'>{title}</h1>
-          </div>
-          <div className='absolute top-[90%] text-sm'>
-            <div className='flex flex-row items-center'>
-              {data && (
-                <NextImage
-                  src={data.artistPicture}
-                  alt={data.artistName}
-                  width={25}
-                  height={25}
-                  className='rounded-full'
-                />
-              )}
-              <p className='ml-[4px]'>{author}</p>
-              <p className='ml-[10px]'>
-                {data ? data.tracks.length : 0} songs,
-              </p>
-              <p className='ml-[4px]'>
-                {data
-                  ? secondsToMinutes(
-                      data.tracks.reduce((acc, e) => acc + e.duration, 0)
-                    )
-                  : 0}
-              </p>
-            </div>
+        <div className='w-full flex flex-col ml-6 md:mt-32'>
+          <h1 className='flex md:items-center text-3xl md:text-6xl font-bold text-white'>
+            {title}
+          </h1>
+          <div className='text-sm pt-6 flex flex-row items-center'>
+            {data && (
+              <NextImage
+                src={data.artistPicture}
+                alt={data.artistName}
+                width={25}
+                height={25}
+                className='rounded-full'
+              />
+            )}
+            <p className='ml-[4px]'>
+              {author} &mdash; {data ? data.tracks.length : 0} songs,{' '}
+              {data
+                ? secondsToMinutes(
+                    data.tracks.reduce((acc, e) => acc + e.duration, 0)
+                  )
+                : 0}
+            </p>
           </div>
         </div>
       </div>
