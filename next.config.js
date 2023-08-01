@@ -13,7 +13,7 @@ const nextConfig = {
     return [
       {
         // matching all API routes
-        source: '/search/:path*',
+        source: '/api/:path*',
         // destination: 'https://api.deezer.com/search/:path*',
         headers: [
           { key: 'Access-Control-Allow-Credentials', value: 'true' },
