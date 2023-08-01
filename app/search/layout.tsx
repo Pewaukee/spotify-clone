@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Navbar from '../components/Navbar';
 
 export const metadata: Metadata = {
   title: 'Search - Spofity Clone',
@@ -11,7 +12,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <main>{children}</main>
-    
+    <>
+      <Navbar />
+      <main>{children}</main>
+    </>
   );
 }
