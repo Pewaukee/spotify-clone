@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import axios from 'axios';
-import { MusicData } from '@/data/musicData';
+import { AlbumData } from '@/data/musicData';
 
 export default function useMusic() {
   
-  const [data, setData] = useState<MusicData>(null);
+  const [data, setData] = useState<AlbumData>(null);
 
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -21,7 +21,7 @@ export default function useMusic() {
     setLoading(true);
     console.log('loading in useMusic', loading)
     try {
-        const response = await axios.get(`${baseUrl}/api/music/music`, {
+        const response = await axios.get(`${baseUrl}/api/music/album`, {
             params: {
                 title,
                 artist,
