@@ -23,6 +23,7 @@ export type SongTrack = {
   explicit_lyrics: boolean;
   preview: string;
   artistName: string;
+  coverImage: string;
 };
 
 export type SongData = SongTrack[] | null;

@@ -50,6 +50,7 @@ export default async function handler(
         const duration = song.duration;
         const explicit_lyrics = song.explicit_lyrics;
         const artistName = song.artist.name;
+        const coverImage = song.album.cover_medium;
 
         songData.push({
           title,
@@ -57,6 +58,7 @@ export default async function handler(
           explicit_lyrics,
           preview,
           artistName,
+          coverImage
         });
 
         return true;

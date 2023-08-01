@@ -3,6 +3,8 @@
 import useItem from '@/hooks/getItem';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
+import Song from './components/Song';
+import Navbar from '../components/Navbar';
 
 let song = '';
 let artist = '';
@@ -56,15 +58,12 @@ export default function Search() {
   }, []);
 
   return (
-    <div>
+    <div className='grid grid-cols-2 gap-8 mt-[50px] pb-[100px]'>
       {songData
-        ? songData.map((song) => {
+        ? songData.map((song, index) => {
             return (
-              <div key={song.preview}>
-                <p>{song.title}</p>
-                <p>{song.duration}</p>
-                <p>{song.explicit_lyrics}</p>
-                <p>{song.preview}</p>
+              <div key={song.preview}className={`${index % 2 === 0 ? 'pl-8': 'pr-8'}`}>
+                <Song song={song} />
               </div>
             );
           })
