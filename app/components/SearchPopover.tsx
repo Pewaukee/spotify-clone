@@ -24,7 +24,10 @@ export default function SearchPopover() {
   const [disabled, setDisabled] = useState(true);
 
   // function to open the search page
-  const handleOpen = () => router.push(`/search/?song=${userSongInput}&artist=${userArtistInput}&album=${userAlbumInput}`)
+  const handleOpen = () =>
+    router.push(
+      `/search/?song=${userSongInput}&artist=${userArtistInput}&album=${userAlbumInput}`
+    );
 
   useEffect(() => {
     if (userSongInput.trim().length > 0 && userAlbumInput.trim().length > 0) {
@@ -76,6 +79,7 @@ export default function SearchPopover() {
               ].map((item) => {
                 return (
                   <MuiText
+                    key={item.label}
                     label={item.label}
                     setFunction={item.setFunction}
                   />
