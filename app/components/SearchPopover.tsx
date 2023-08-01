@@ -2,11 +2,13 @@
 
 import React, { useEffect, useState } from 'react';
 import { Search } from 'lucide-react';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import * as Popover from '@radix-ui/react-popover';
 import MuiText from './MuiText';
 
 export default function SearchPopover() {
+  const router = useRouter();
+
   // init the pathname for additional underline styling based on the current page
   const pathname = usePathname();
 
@@ -22,15 +24,20 @@ export default function SearchPopover() {
   const [disabled, setDisabled] = useState(true);
 
   // function to open the search page
-  const handleOpen = () => console.log('button clicked, now call endpoint');
+  const handleOpen = () => router.push(`/search/?song=${userSongInput}&artist=${userArtistInput}&album=${userAlbumInput}`)
 
   useEffect(() => {
+    if (userSongInput.trim().length > 0 && userAlbumInput.trim().length > 0) {
+      return setDisabled(true);
+    }
     if (
       userSongInput.trim().length > 1 ||
       userAlbumInput.trim().length > 1 ||
       userArtistInput.trim().length > 1
-    )
+    ) {
       return setDisabled(false);
+    }
+
     return setDisabled(true);
   }, [userSongInput, userArtistInput, userAlbumInput]);
 
