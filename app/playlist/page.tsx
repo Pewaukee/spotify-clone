@@ -13,8 +13,9 @@ import {
 import NextImage from 'next/image';
 import PlayButton from '../components/PlayButton';
 import SongTable from './components/SongTable';
-import { MusicData } from '@/data/musicData';
+import { Album, AlbumData, AlbumTrack } from '@/data/musicData';
 import { secondsToMinutes } from '@/utils/secondsToMinutes';
+import useItem from '@/hooks/getItem';
 
 // keep title and author outside the re-rendering of playlist
 let title = '';
@@ -24,7 +25,15 @@ export default function Playlist() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const { data, loading, error, fetchMusic } = useMusic();
+  const { albumData, loading, error, fetchAlbum } = useItem();
+
+  const [currentAlbum, setCurrentAlbum] = useState<Album>({
+    albumName: '',
+    albumCover: '',
+    tracks: [],
+    artistName: '',
+    artistPicture: '',
+  }); // current album
 
   const { picture, pictureLoading, fetchPicture } = usePicture();
 
@@ -32,12 +41,11 @@ export default function Playlist() {
 
   const handleLoad = useCallback(async () => {
     console.log('running handleload function');
-    await fetchMusic({
-      title: title,
-      artist: author,
+    await fetchAlbum({
+      album: title,
     });
     // await fetchPicture(); // fallback for no image
-  }, [fetchMusic, fetchPicture, title, author]);
+  }, [fetchAlbum, fetchPicture, title, author]);
 
   useEffect(() => {
     if (searchParams) {
@@ -55,7 +63,7 @@ export default function Playlist() {
   // https://dev.to/producthackers/creating-a-color-palette-with-javascript-44ip
 
   const findGradient = useCallback(
-    (data: MusicData) => {
+    (data: Album) => {
       // if any error occurs, just return black
       console.log('data in findGradient', data);
       if (data !== null) {
@@ -91,13 +99,34 @@ export default function Playlist() {
         };
       }
     },
-    [buildRgb, quantization, findAverage, rgbToHex, data, setAverageColor]
+    [buildRgb, quantization, findAverage, rgbToHex, albumData, setAverageColor]
   );
 
   useEffect(() => {
-    console.log('useEffect in playlist, data:', data);
-    if (data) findGradient(data);
-  }, [data, findGradient]);
+    console.log('useEffect in playlist, data:', albumData);
+    const album = albumData
+      ? albumData.find(
+          (album: {
+            albumName: string;
+            albumCover: string;
+            tracks: AlbumTrack[];
+            artistName: string;
+            artistPicture: string;
+          }) => {
+            return album.artistName === author;
+          }
+        )
+      : null;
+    if (author && album) {
+      setCurrentAlbum(album);
+    }
+  }, [albumData, findGradient]);
+
+  useEffect(() => {
+    if (currentAlbum.albumName !== '') {
+      findGradient(currentAlbum);
+    }
+  }, [currentAlbum]);
 
   return (
     <div
@@ -112,11 +141,11 @@ export default function Playlist() {
       <div className='p-4 flex flex-col md:flex-row justify-center md:justify-normal items-center'>
         {/** use ${averageColor} */}
         <div className='flex mt-12 md:justify-self-left w-[70%] md:w-[20%] mb-6 md:mb-0'>
-          {data ? (
+          {currentAlbum ? (
             <AspectRatio.Root ratio={1}>
               <img
-                src={data.albumCover}
-                alt={data.artistName}
+                src={currentAlbum.albumCover}
+                alt={currentAlbum.artistName}
                 className='shadow-md shadow-gray-800 rounded-none'
                 id='albumCover'
               />
@@ -137,20 +166,23 @@ export default function Playlist() {
             {title}
           </h1>
           <div className='text-sm pt-6 flex flex-row items-center'>
-            {data && (
+            {currentAlbum && (
               <NextImage
-                src={data.artistPicture}
-                alt={data.artistName}
+                src={currentAlbum.artistPicture}
+                alt={currentAlbum.artistName}
                 width={25}
                 height={25}
                 className='rounded-full'
               />
             )}
             <p className='ml-[4px]'>
-              {author} &mdash; {data ? data.tracks.length : 0} songs,{' '}
-              {data
+              {author} &mdash; {currentAlbum ? currentAlbum.tracks.length : 0} songs,{' '}
+              {currentAlbum
                 ? secondsToMinutes(
-                    data.tracks.reduce((acc, e) => acc + e.duration, 0)
+                    currentAlbum.tracks.reduce(
+                      (acc: number, e: AlbumTrack) => acc + e.duration,
+                      0
+                    )
                   )
                 : 0}
             </p>
@@ -162,7 +194,7 @@ export default function Playlist() {
           title={title}
           author={author}
         />
-        <SongTable data={data} />
+        <SongTable data={currentAlbum} />
       </div>
     </div>
   );
