@@ -2,14 +2,25 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Home } from 'lucide-react';
+import { Folders, Home } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import { usePathname } from 'next/navigation';
 import SearchPopover from './SearchPopover';
+import { CaretDownIcon } from '@radix-ui/react-icons';
+import styles from '../../styles/NavMenu.module.css';
 
 // lazy load the NavigationMenu component, to prevent lots of client code from being rendered as well as server code
 const NavigationMenuItem = dynamic(() => import('./NavigationMenu'), {
-  loading: () => <p>Loading...</p>,
+  loading: () => (
+    <div className='flex flex-row justify-center items-center'>
+      <p>Library</p>
+      <Folders className='ml-[5px]' />
+      <CaretDownIcon
+        className={styles.CaretDown}
+        aria-hidden
+      />
+    </div>
+  ),
 });
 
 export default function Navbar() {
