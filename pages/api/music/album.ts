@@ -77,10 +77,8 @@ export default async function handler(
           artistName,
           artistPicture,
         });
-        // console.log(albumData)
-        
       }
-      console.log('albumdata at end of loop', albumData);
+      
       return res.json({ albumData });
     } catch (error: any) {
       return res.status(500).json({ message: error.response.data });

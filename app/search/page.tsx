@@ -40,7 +40,6 @@ export default function Search() {
     } else if (artist.length > 0) {
       fetchArtist({ artist });
     } else {
-      console.log('fetching albums', album);
       fetchAlbum({ album });
     }
   };

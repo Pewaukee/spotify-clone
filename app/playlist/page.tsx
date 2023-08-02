@@ -36,7 +36,6 @@ export default function Playlist() {
   const [averageColor, setAverageColor] = useState('#ffffff');
 
   const handleLoad = useCallback(async () => {
-    console.log('running handleload function');
     await fetchAlbum({
       album: title,
     });
@@ -61,7 +60,6 @@ export default function Playlist() {
   const findGradient = useCallback(
     (data: Album) => {
       // if any error occurs, just return black
-      console.log('data in findGradient', data);
       if (data !== null) {
         const img = new Image();
         img.src = data.albumCover;
@@ -84,7 +82,6 @@ export default function Playlist() {
             const quantized = quantization(rgb, 0);
             const average = findAverage(quantized);
             const averageColor = rgbToHex(average.r, average.g, average.b);
-            console.log('averageColor', averageColor);
             setAverageColor(averageColor);
           } else {
             console.error('imageData is null');
@@ -99,7 +96,7 @@ export default function Playlist() {
   );
 
   useEffect(() => {
-    console.log('useEffect in playlist, data:', albumData);
+    console.log('useEffect in playlist');
     const album = albumData
       ? albumData.find(
           (album: {

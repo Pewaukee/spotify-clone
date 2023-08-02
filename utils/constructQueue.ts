@@ -15,7 +15,6 @@ export const constructQueue = (data: AlbumData, artist: string): Promise<Queue> 
    */
   return new Promise((resolve, reject) => {
     if (data) {
-      console.log('data in constructQueue', data)
       for (const album of data) {
         if (album.artistName === artist) {
           const newQueue: Queue = [];

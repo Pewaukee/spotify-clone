@@ -21,7 +21,6 @@ export default function VolumeSlider() {
 
   // mute or unmute the volume if the volume icon is clicked
   const handleClick = () => {
-    console.log(volume[0]);
     if (volume[0] === 0) {
       setVolume([20]);
     } else {

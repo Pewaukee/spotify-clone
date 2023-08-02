@@ -18,7 +18,6 @@ import RewindButton from './ControlButtons/RewindButton';
 import ShuffleButton from './ControlButtons/ShuffleButton';
 import RepeatButton from './ControlButtons/RepeatButton';
 import { shuffleIndices } from '@/utils/shuffle';
-import useMusic from '@/hooks/useMusic';
 
 export default function Player() {
   // import context variables
@@ -34,8 +33,6 @@ export default function Player() {
     randomIndices,
     setRandomIndices,
   } = usePlayer();
-  // use loading from api hook
-  const { loading } = useMusic();
   // time state for the slider
   const [time, setTime] = useState<number>(0);
   // keep track of the current <audio> element
@@ -127,7 +124,7 @@ export default function Player() {
   // useEffect with lists runs infinitely
   // useDeepCompareEffect actually compares the contents of the list
   useDeepCompareEffect(() => {
-    console.log('usedeepcompareeffect 1 for queue', queue);
+    console.log('usedeepcompareeffect 1 for queue');
     // clear whatever music was playing before, get a fresh start
     setAudioFile(null);
     if (queue.length > 0) {
@@ -135,15 +132,9 @@ export default function Player() {
     }
   }, [queue, setRandomIndices, shuffleIndices]);
 
-  // when the randomIndices list changes, update the current song
-  // useDeepCompareEffect(() => {
-  //   console.log('usedeepcompareeffect 2 for random indices', randomIndices)
-  //   setCurrentSong(firstSong());
-  // }, [randomIndices, setCurrentSong]);
-
   // if the current song changes, only then get the audio file
   useEffect(() => {
-    console.log('useeffect 1 for current song', currentSong);
+    console.log('useeffect 1 for current song');
     // first pause the currently playing audio file
     if (audioFile) {
       audioFile.pause();
@@ -157,7 +148,7 @@ export default function Player() {
   // event that adds event listeners to the <audio> element
   // only when the audioFile changes
   useEffect(() => {
-    console.log('useeffect 2 for audiofile', audioFile);
+    console.log('useeffect 2 for audiofile');
     // add the event listeners when the component mounts
     if (audioFile) {
       // should independently add event listeners to each <audio> element

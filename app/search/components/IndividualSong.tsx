@@ -23,7 +23,6 @@ export default function IndividualSong({ song }: { song: SongTrack }) {
     setCurrentSong(queue[0]);
   }, [queue]);
 
-  console.log('song cover image', song.coverImage)
   return (
     <button
       className='w-full bg-gray-600 grid grid-cols-5 mb-[5px] hover:bg-gray-400'

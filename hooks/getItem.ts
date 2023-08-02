@@ -51,7 +51,6 @@ export default function useItem() {
   };
 
   const fetchAlbum = async ({ album }: { album: string }) => {
-    console.log('fetching album');
     setLoading(true);
     try {
       const response = await axios.get(`${baseUrl}/api/music/album`, {
@@ -60,7 +59,7 @@ export default function useItem() {
         },
       });
 
-      console.log('response.data', response.data);
+      console.log(response.data);
       setAlbumData(response.data.albumData);
       setLoading(false);
     } catch (error: any) {

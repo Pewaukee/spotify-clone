@@ -15,7 +15,6 @@ export default function SongTable({ data }: { data: Album }) {
         <div className='md:ml-[5%] md:mr-[5%] pb-[100px]'>
           <Header />
           {data.tracks.map((track, index) => {
-            console.log(track.explicit_lyrics);
             return (
               <Song
                 key={index}

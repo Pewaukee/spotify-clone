@@ -60,7 +60,6 @@ export default function Song({
   useEffect(() => {
     constructQueue(albumData, artistName)
       .then((queue) => {
-        console.log('queue in song.tsx', queue);
         setQueue(queue);
         setCurrentSong(queue[track_position - 1]);
       })

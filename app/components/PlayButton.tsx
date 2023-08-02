@@ -28,7 +28,6 @@ export default function PlayButton({
     // use promises to ensure that queue is set properly without 'race conditions'
     constructQueue(albumData, author)
       .then((queue) => {
-        console.log('queue', queue);
         setQueue(queue);
         setCurrentSong(shuffle ? queue[randomIndices[0]] : queue[0]);
       })
