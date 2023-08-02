@@ -6,6 +6,12 @@ This is a Spotify clone built using Next.js, a popular React framework for serve
 
 https://spotify-clone-mocha-ten.vercel.app
 
+![Home Page](https://github.com/Pewaukee/spotify-clone/blob/master/demo/home.png)
+![Search Page (Song)](https://github.com/Pewaukee/spotify-clone/blob/master/demo/song_search.png)
+![Search Page (Artist)](https://github.com/Pewaukee/spotify-clone/blob/master/demo/artist.png)
+![Search Page (Album)](https://github.com/Pewaukee/spotify-clone/blob/master/demo/search_album.png)
+![Playlists Page](https://github.com/Pewaukee/spotify-clone/blob/master/demo/playlist.png)
+
 ## Features
 
 - Browsing and searching for songs, artists, and albums
