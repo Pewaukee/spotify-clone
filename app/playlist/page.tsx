@@ -1,7 +1,6 @@
 'use client';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import usePicture from '@/hooks/getPicture';
 import * as AspectRatio from '@radix-ui/react-aspect-ratio';
 import {
   quantization,
