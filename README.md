@@ -20,15 +20,15 @@ https://spotify-clone-mocha-ten.vercel.app
 
 ## Technologies Used
 
-- Next.js
-- React
-- MaterialUI
-- Tailwind CSS
-- Deezer API
+- [Next.js](https://nextjs.org)
+- [React](https://react.dev)
+- [MaterialUI](https://mui.com/material-ui/)
+- [Tailwind CSS](https://tailwindcss.com)
+- [Deezer API](https://developers.deezer.com/api)
 - [useDeepCompareEffect](https://github.com/kentcdodds/use-deep-compare-effect)
-- Axios
-- RadixUI
-- Lucide Icons
+- [Axios](https://axios-http.com/docs/intro)
+- [RadixUI](https://www.radix-ui.com/docs/primitives/overview/introduction)
+- [Lucide Icons](https://lucide.dev)
 
 ## Installation
 
