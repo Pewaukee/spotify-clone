@@ -58,7 +58,7 @@ export const homeAlbums: {
       alt: 'Industry Plant Iann Dior Album Cover',
     },
     title: 'Industry Plant',
-    artist: 'Iann Dior',
+    artist: 'iann dior',
     type: 'Album',
   },
   {
