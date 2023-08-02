@@ -29,14 +29,17 @@ https://spotify-clone-mocha-ten.vercel.app
 - [Axios](https://axios-http.com/docs/intro)
 - [RadixUI](https://www.radix-ui.com/docs/primitives/overview/introduction)
 - [Lucide Icons](https://lucide.dev)
+- [Vercel](https://vercel.com)
 
 ## Installation
 
 Provide step-by-step instructions to set up the project locally:
 
-1. Clone the repository: `git clone https://github.com/your-username/spotify-clone.git`
+1. Clone the repository: `git clone https://github.com/Pewaukee/spotify-clone.git`
 2. Navigate to the project directory: `cd spotify-clone`
 3. Install dependencies: `npm install` or `yarn install`
+4. Start development server: `npm run dev`
+5. Deploy on Vercel
 
 ## Issues
 
