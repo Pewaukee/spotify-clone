@@ -5,6 +5,8 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 import Song from './components/Song';
 import Navbar from '../components/Navbar';
+import PlaylistCard from '../components/PlaylistCard';
+import Artist from './components/Artist';
 
 let song = '';
 let artist = '';
@@ -41,7 +43,7 @@ export default function Search() {
     } else if (artist.length > 0) {
       fetchArtist({ artist });
     } else {
-        console.log('fetching albums', album);
+      console.log('fetching albums', album);
       fetchAlbum({ album });
     }
   };
@@ -58,34 +60,43 @@ export default function Search() {
   }, []);
 
   return (
-    <div className='grid grid-cols-2 gap-8 mt-[50px] pb-[100px]'>
-      {songData
-        ? songData.map((song, index) => {
+    <>
+      {songData ? (
+        <div className='pb-[100px] mt-[50px] grid grid-cols-2'>
+          {songData.map((song, index) => {
             return (
-              <div key={song.preview}className={`${index % 2 === 0 ? 'pl-8': 'pr-8'}`}>
+              <div
+                key={index}
+                className='pl-2 pr-2 md:pl-8 md:pr-8 pb-2 md:pb-8'
+              >
                 <Song song={song} />
               </div>
             );
-          })
-        : null}
-      {artistData && (
-        <div>
-          <p>{artistData.artistName}</p>
-          <p>{artistData.artistPicture}</p>
+          })}
         </div>
-      )}
-      {albumData
-        ? albumData.map((album) => {
+      ) : null}
+
+      <div>{artistData ? <Artist artistData={artistData} /> : null}</div>
+
+      {albumData ? (
+        <div className='pb-[100px] mt-[50px] grid grid-cols-2 md:grid-cols-3 ml-[10%] mr-[10%] flex justify-center items-center'>
+          {albumData.map((album, index) => {
             return (
-              <div>
-                <p>{album.albumName}</p>
-                <p>{album.albumCover}</p>
-                <p>{album.artistName}</p>
-                <p>{album.artistPicture}</p>
+              <div className='pl-2 pr-2 md:pl-8 md:pr-8 pb-2 md:pb-8'>
+                <PlaylistCard
+                  key={index}
+                  image={{
+                    src: album.albumCover,
+                    alt: `${album.albumName} by ${album.artistName} Album Cover`,
+                  }}
+                  title={album.albumName}
+                  description={album.artistName}
+                />
               </div>
             );
-          })
-        : null}
-    </div>
+          })}
+        </div>
+      ) : null}
+    </>
   );
 }
