@@ -53,9 +53,7 @@ export default function Song({ song }: { song: SongTrack }) {
           fontSize='large'
         />
       </button>
-      <MusicFiles />
     </div>
   );
 }
 
-// TODO: is <MusicFiles /> needed?
