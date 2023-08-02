@@ -1,11 +1,11 @@
 // render a single song like in the row
-import { MusicData } from '@/data/musicData';
+import { Album } from '@/data/musicData';
 import React from 'react';
 import Header from './Header';
 import Link from 'next/link';
 import Song from './Song';
 
-export default function SongTable({ data }: { data: MusicData }) {
+export default function SongTable({ data }: { data: Album }) {
   // get the number of tracks and other relevant information
 
   const length = data ? data.tracks.length : 0;
