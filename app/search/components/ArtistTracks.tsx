@@ -5,10 +5,8 @@ import IndividualSong from './IndividualSong';
 
 export default function ArtistTracks({
   songs,
-  artist,
 }: {
   songs: SongData;
-  artist: string;
 }) {
   return (
     <div className='flex justify-center items-center'>

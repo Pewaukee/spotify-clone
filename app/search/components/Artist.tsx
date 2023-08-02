@@ -65,7 +65,6 @@ export default function Artist({ artistData }: { artistData: ArtistData }) {
           {artistData ? (
             <ArtistTracks
               songs={artistData.songData}
-              artist={artistData.artistName}
             />
           ) : null}
         </div>
