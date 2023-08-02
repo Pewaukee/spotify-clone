@@ -1,6 +1,7 @@
 'use client';
 
 import { usePlayer } from '@/app/context/PlayerContext';
+import useItem from '@/hooks/getItem';
 import useMusic from '@/hooks/useMusic';
 import { constructQueue } from '@/utils/constructQueue';
 import { secondsToMinutes } from '@/utils/secondsToMinutes';
@@ -30,7 +31,8 @@ export default function Song({
 
   const { queue, setQueue, setCurrentSong, currentSong, setPause, pause } =
     usePlayer();
-  const { data, loading, fetchMusic } = useMusic();
+  
+    const {albumData, fetchAlbum} = useItem();
 
   const handleClick = async () => {
     // if the song is already playing, pause it
@@ -49,16 +51,15 @@ export default function Song({
     if (index !== -1) setCurrentSong(queue[index]);
     else {
       // the clicked song is nowhere in the queue, fetch a new queue
-      await fetchMusic({
+      await fetchAlbum({
         // trigger a change in the data variable for below useEffect
-        title: albumTitle,
-        artist: artistName,
+        album: albumTitle,
       });
     }
   };
 
   useEffect(() => {
-    constructQueue(data)
+    constructQueue(albumData, artistName)
       .then((queue) => {
         console.log('queue in song.tsx', queue);
         setQueue(queue);
@@ -67,7 +68,7 @@ export default function Song({
       .catch((err) => {
         console.log('error in constructQueue', err);
       });
-  }, [setQueue, data]);
+  }, [setQueue, albumData]);
 
   return (
     <div
