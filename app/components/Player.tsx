@@ -207,12 +207,12 @@ export default function Player() {
                 alt={`Song Cover of ${currentSong.title} by ${currentSong.artist}`}
                 width={50}
                 height={50}
-                className='rounded-md ml-4 mt-[10px] mb-[10px]'
+                className='rounded-md ml-1 md:ml-4 mt-[10px] mb-[10px]'
               />
 
               <div className='flex flex-col ml-2 justify-center'>
-                <h1 className='text-lg text-white'>{currentSong.title}</h1>
-                <p className='text-xs text-gray-300'>{currentSong.artist}</p>
+                <h1 className='line-clamp-1 text-[10px] md:text-lg text-white'>{currentSong.title}</h1>
+                <p className='text-[8px] md:text-xs text-gray-300'>{currentSong.artist}</p>
               </div>
             </>
           ) : (
