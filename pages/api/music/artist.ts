@@ -46,6 +46,8 @@ export default async function handler(
           duration: song.duration,
           explicit_lyrics: song.explicit_lyrics,
           preview: song.preview,
+          artistName: artistName,
+          coverImage: song.album.cover_small,
         };
       });
 
