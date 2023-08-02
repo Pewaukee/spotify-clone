@@ -41,9 +41,5 @@ export default function RepeatButton() {
     }
   };
 
-  return (
-    <button onClick={repeatFunc}>
-      {repeatStyle()}
-    </button>
-  );
+  return <button onClick={repeatFunc}>{repeatStyle()}</button>;
 }

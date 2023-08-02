@@ -4,7 +4,6 @@ import useItem from '@/hooks/getItem';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 import Song from './components/Song';
-import Navbar from '../components/Navbar';
 import PlaylistCard from '../components/PlaylistCard';
 import Artist from './components/Artist';
 
@@ -20,8 +19,6 @@ export default function Search() {
     songData,
     artistData,
     albumData,
-    loading,
-    error,
     fetchArtist,
     fetchSong,
     fetchAlbum,
@@ -82,7 +79,10 @@ export default function Search() {
         <div className='pb-[100px] mt-[50px] grid grid-cols-2 md:grid-cols-3 ml-[10%] mr-[10%] flex justify-center items-center'>
           {albumData.map((album, index) => {
             return (
-              <div key={index} className='pl-2 pr-2 md:pl-8 md:pr-8 pb-2 md:pb-8'>
+              <div
+                key={index}
+                className='pl-2 pr-2 md:pl-8 md:pr-8 pb-2 md:pb-8'
+              >
                 <PlaylistCard
                   image={{
                     src: album.albumCover,

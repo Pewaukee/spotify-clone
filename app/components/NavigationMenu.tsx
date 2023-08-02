@@ -40,9 +40,7 @@ export default function NavigationMenuItem() {
               aria-hidden
             />
           </NavigationMenu.Trigger>
-          <NavigationMenu.Content
-            className='w-[200%] md:w-full absolute flex justify-center items-center mt-4 top-0 left-[-95%] md:left-0 duration-200 ease-in-out'
-          >
+          <NavigationMenu.Content className='w-[200%] md:w-full absolute flex justify-center items-center mt-4 top-0 left-[-95%] md:left-0 duration-200 ease-in-out'>
             <ul className='p-[10px] mt-[20px] list-none flex flex-col justify-center items-center bg-black rounded-xl border-4 border-solid border-white'>
               {/** TODO: convert to server component with children prop passing */}
               <ScrollMenu playlists={homeAlbums} />

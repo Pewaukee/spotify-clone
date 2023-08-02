@@ -1,4 +1,3 @@
-import Navbar from './components/Navbar';
 import Player from './components/Player';
 import PlayerProvider from './context/PlayerContext';
 import './globals.css';

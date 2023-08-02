@@ -37,19 +37,19 @@ export default function TermsOfUse() {
               <p>
                 Spotify Clone and its content, including but not limited to
                 text, images, graphics, logos, and software, are the property of
-                Karthik (github user Pewaukee) and are protected by copyright and other
-                intellectual property laws. You may not reproduce, distribute,
-                or use any content from Spotify Clone without express written
-                permission from Karthik (github user Pewaukee).
+                Karthik (github user Pewaukee) and are protected by copyright
+                and other intellectual property laws. You may not reproduce,
+                distribute, or use any content from Spotify Clone without
+                express written permission from Karthik (github user Pewaukee).
               </p>
             </li>
             <li>
               <p>
                 Any user-generated content you submit or upload to Spotify Clone
-                becomes the property of Karthik (github user Pewaukee), and you grant Spotify
-                Clone llc a non-exclusive, worldwide, royalty-free license to
-                use, reproduce, modify, adapt, publish, translate, and
-                distribute the content for any purpose.
+                becomes the property of Karthik (github user Pewaukee), and you
+                grant Spotify Clone llc a non-exclusive, worldwide, royalty-free
+                license to use, reproduce, modify, adapt, publish, translate,
+                and distribute the content for any purpose.
               </p>
             </li>
           </ul>
@@ -59,16 +59,16 @@ export default function TermsOfUse() {
           <ul className='list-disc pl-12'>
             <li>
               <p>
-                Karthik (github user Pewaukee) makes no warranties or representations about
-                the accuracy or completeness of Spotify Clone&apos;s content.
-                The application is provided on an &quot;as-is&quot; basis
-                without any warranties of any kind.
+                Karthik (github user Pewaukee) makes no warranties or
+                representations about the accuracy or completeness of Spotify
+                Clone&apos;s content. The application is provided on an
+                &quot;as-is&quot; basis without any warranties of any kind.
               </p>
             </li>
             <li>
               <p>
-                Karthik (github user Pewaukee) disclaims all warranties, express or implied,
-                including but not limited to implied warranties of
+                Karthik (github user Pewaukee) disclaims all warranties, express
+                or implied, including but not limited to implied warranties of
                 merchantability, fitness for a particular purpose, and
                 non-infringement.
               </p>
@@ -80,10 +80,10 @@ export default function TermsOfUse() {
           <ul className='list-disc pl-12'>
             <li>
               <p>
-                Karthik (github user Pewaukee) will not be liable for any damages, direct or
-                indirect, arising from the use of Spotify Clone, including but
-                not limited to damages for lost profits, data loss, or business
-                interruption.
+                Karthik (github user Pewaukee) will not be liable for any
+                damages, direct or indirect, arising from the use of Spotify
+                Clone, including but not limited to damages for lost profits,
+                data loss, or business interruption.
               </p>
             </li>
           </ul>
@@ -93,11 +93,11 @@ export default function TermsOfUse() {
           <ul className='list-disc pl-12'>
             <li>
               <p>
-                You agree to indemnify and hold harmless Karthik (github user Pewaukee) and
-                its employees, officers, directors, and affiliates from any
-                claims, damages, losses, liabilities, and expenses (including
-                legal fees) arising out of or related to your use of Spotify
-                Clone or any violation of these Terms of Use.
+                You agree to indemnify and hold harmless Karthik (github user
+                Pewaukee) and its employees, officers, directors, and affiliates
+                from any claims, damages, losses, liabilities, and expenses
+                (including legal fees) arising out of or related to your use of
+                Spotify Clone or any violation of these Terms of Use.
               </p>
             </li>
           </ul>
@@ -106,10 +106,10 @@ export default function TermsOfUse() {
           <h1 className='font-bold'>Modifictation and Termination</h1>
           <ul className='list-disc pl-12'>
             <p>
-              Karthik (github user Pewaukee) reserves the right to modify or terminate
-              Spotify Clone or these Terms of Use at any time, with or without
-              notice. Continued use of the application after any modifications
-              constitute acceptance of the updated Terms of Use.
+              Karthik (github user Pewaukee) reserves the right to modify or
+              terminate Spotify Clone or these Terms of Use at any time, with or
+              without notice. Continued use of the application after any
+              modifications constitute acceptance of the updated Terms of Use.
             </p>
           </ul>
         </li>

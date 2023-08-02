@@ -2,7 +2,6 @@
 import { Album } from '@/data/musicData';
 import React from 'react';
 import Header from './Header';
-import Link from 'next/link';
 import Song from './Song';
 
 export default function SongTable({ data }: { data: Album }) {

@@ -11,7 +11,6 @@ export default function FastForwardButton({
   findNextSong: () => Song;
   setTime: Dispatch<SetStateAction<number>>;
 }) {
-
   // for repeat changes on skip
   const { repeat, setRepeat } = usePlayer();
 

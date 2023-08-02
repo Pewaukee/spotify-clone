@@ -13,9 +13,19 @@ export default function Header() {
           <p>Title</p>
         </div>
         <div className='col-span-2'>
-          <Clock3 size={16} color={'#9ca3af'}/>
+          <Clock3
+            size={16}
+            color={'#9ca3af'}
+          />
         </div>
-        <div className='col-span-2 flex flex-row text-gray-400'>Preview <ExternalLink size={16} color={'#9ca3af'} className='ml-[4px] opacity-0 md:opacity-100'/></div>
+        <div className='col-span-2 flex flex-row text-gray-400'>
+          Preview{' '}
+          <ExternalLink
+            size={16}
+            color={'#9ca3af'}
+            className='ml-[4px] opacity-0 md:opacity-100'
+          />
+        </div>
       </div>
       {/** add a horizontal line */}
       <div className='mt-2 mb-2 w-full h-[2px] bg-gray-800 opacity-50'></div>

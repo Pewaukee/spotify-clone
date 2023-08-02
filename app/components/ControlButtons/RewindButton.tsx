@@ -1,6 +1,5 @@
 import { Song, usePlayer } from '@/app/context/PlayerContext';
 import { Rewind } from 'lucide-react';
-import { Dispatch, SetStateAction } from 'react';
 
 export default function RewindButton({
   setCurrentSong,
@@ -14,7 +13,7 @@ export default function RewindButton({
   findIndexOfSong: () => number;
 }) {
   const { shuffle, queue } = usePlayer();
-  
+
   // navigate to the previous song in the queue
   const previous = () => {
     if (audioFile) {

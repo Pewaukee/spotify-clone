@@ -3,7 +3,7 @@ import { LinearProgress, Skeleton } from '@mui/material';
 import Image from 'next/image';
 import VolumeSlider from './VolumeSlider';
 import MusicFiles from './MusicFiles';
-import { Queue, RepeatMode, Song, usePlayer } from '../context/PlayerContext';
+import { RepeatMode, Song, usePlayer } from '../context/PlayerContext';
 import {
   useCallback, // memoizes the function so that it doesn't change every render
   useEffect,
@@ -211,8 +211,12 @@ export default function Player() {
               />
 
               <div className='flex flex-col ml-2 justify-center'>
-                <h1 className='line-clamp-1 text-[10px] md:text-lg text-white'>{currentSong.title}</h1>
-                <p className='text-[8px] md:text-xs text-gray-300'>{currentSong.artist}</p>
+                <h1 className='line-clamp-1 text-[10px] md:text-lg text-white'>
+                  {currentSong.title}
+                </h1>
+                <p className='text-[8px] md:text-xs text-gray-300'>
+                  {currentSong.artist}
+                </p>
               </div>
             </>
           ) : (

@@ -2,7 +2,7 @@ import { usePlayer } from '@/app/context/PlayerContext';
 import { ArtistData } from '@/data/musicData';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import Image from 'next/image';
-import React, { useEffect } from 'react';
+import React from 'react';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 import ArtistTracks from './ArtistTracks';
 

@@ -2,11 +2,11 @@ import { TextField } from '@mui/material';
 import React, { Dispatch, SetStateAction } from 'react';
 
 export default function MuiText({
-    label,
-    setFunction
+  label,
+  setFunction,
 }: {
-    label: string;
-    setFunction: Dispatch<SetStateAction<string>>;
+  label: string;
+  setFunction: Dispatch<SetStateAction<string>>;
 }) {
   return (
     <TextField

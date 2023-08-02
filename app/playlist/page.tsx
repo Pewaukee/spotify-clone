@@ -1,7 +1,6 @@
 'use client';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import useMusic from '@/hooks/useMusic';
 import usePicture from '@/hooks/getPicture';
 import * as AspectRatio from '@radix-ui/react-aspect-ratio';
 import {
@@ -25,7 +24,7 @@ export default function Playlist() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const { albumData, loading, error, fetchAlbum } = useItem();
+  const { albumData, fetchAlbum } = useItem();
 
   const [currentAlbum, setCurrentAlbum] = useState<Album>({
     albumName: '',
@@ -35,8 +34,6 @@ export default function Playlist() {
     artistPicture: '',
   }); // current album
 
-  const { picture, pictureLoading, fetchPicture } = usePicture();
-
   const [averageColor, setAverageColor] = useState('#ffffff');
 
   const handleLoad = useCallback(async () => {
@@ -45,7 +42,7 @@ export default function Playlist() {
       album: title,
     });
     // await fetchPicture(); // fallback for no image
-  }, [fetchAlbum, fetchPicture, title, author]);
+  }, [fetchAlbum, title, author]);
 
   useEffect(() => {
     if (searchParams) {
@@ -176,7 +173,8 @@ export default function Playlist() {
               />
             )}
             <p className='ml-[4px]'>
-              {author} &mdash; {currentAlbum ? currentAlbum.tracks.length : 0} songs,{' '}
+              {author} &mdash; {currentAlbum ? currentAlbum.tracks.length : 0}{' '}
+              songs,{' '}
               {currentAlbum
                 ? secondsToMinutes(
                     currentAlbum.tracks.reduce(

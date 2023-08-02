@@ -19,11 +19,7 @@ export default function LibraryItem({
   return (
     <button
       className='w-full'
-      onClick={() =>
-        router.push(
-          `/playlist?title=${name}&author=${creator}`
-        )
-      }
+      onClick={() => router.push(`/playlist?title=${name}&author=${creator}`)}
     >
       <div className='relative w-full h-full grid grid-cols-2 rounded-lg bg-black hover:bg-black/25'>
         <div className='flex items-center justify-center p-[10px]'>

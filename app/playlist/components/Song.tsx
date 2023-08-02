@@ -2,12 +2,11 @@
 
 import { usePlayer } from '@/app/context/PlayerContext';
 import useItem from '@/hooks/getItem';
-import useMusic from '@/hooks/useMusic';
 import { constructQueue } from '@/utils/constructQueue';
 import { secondsToMinutes } from '@/utils/secondsToMinutes';
 import { Headphones, Pause, Play } from 'lucide-react';
 import Link from 'next/link';
-import React, { useCallback, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
 
 export default function Song({
@@ -31,8 +30,8 @@ export default function Song({
 
   const { queue, setQueue, setCurrentSong, currentSong, setPause, pause } =
     usePlayer();
-  
-    const {albumData, fetchAlbum} = useItem();
+
+  const { albumData, fetchAlbum } = useItem();
 
   const handleClick = async () => {
     // if the song is already playing, pause it
