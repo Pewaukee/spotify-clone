@@ -5,6 +5,7 @@ import Image from 'next/image';
 import React, { useCallback, useEffect } from 'react';
 import { Queue, usePlayer } from '../context/PlayerContext';
 import { constructQueue } from '@/utils/constructQueue';
+import useItem from '@/hooks/getItem';
 
 export default function PlayButton({
   title,
@@ -14,26 +15,25 @@ export default function PlayButton({
   author: string;
 }) {
   const { queue, setQueue, setCurrentSong, randomIndices, shuffle } = usePlayer();
-  const { data, loading, error, fetchMusic } = useMusic();
+  const { albumData, loading, error, fetchAlbum } = useItem();
 
   const handleClick = async () => {
-    await fetchMusic({
-      title: title,
-      artist: author,
+    await fetchAlbum({
+      album: title,
     });
   };
 
   // on a change of data, set the queue with the function
   useEffect(() => {
     // use promises to ensure that queue is set properly without 'race conditions'
-    constructQueue(data).then(queue => {
+    constructQueue(albumData, author).then(queue => {
       console.log('queue', queue);
       setQueue(queue)
       setCurrentSong(shuffle ? queue[randomIndices[0]]: queue[0]);
     }).catch(err => {
       console.log('error in constructQueue', err)
     });
-  }, [setQueue, data]);
+  }, [setQueue, albumData]);
 
   return (
       <button onClick={handleClick}>

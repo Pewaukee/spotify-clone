@@ -1,7 +1,7 @@
 import { Queue } from '@/app/context/PlayerContext';
-import { MusicData } from '@/data/musicData';
+import { AlbumData } from '@/data/musicData';
 
-export const constructQueue = (data: MusicData): Promise<Queue> => {
+export const constructQueue = (data: AlbumData, artist: string): Promise<Queue> => {
   // construct the new list based on the following type sig
   /**
    * type Song = {
@@ -15,18 +15,23 @@ export const constructQueue = (data: MusicData): Promise<Queue> => {
    */
   return new Promise((resolve, reject) => {
     if (data) {
-      const newQueue: Queue = [];
-      const image_src = data.albumCover;
-      const artist = data.artistName;
-      data.tracks.forEach((track) => {
-        newQueue.push({
-          title: track.title,
-          preview: track.preview,
-          image_src: image_src,
-          artist: artist,
-        });
-      });
-      resolve(newQueue);
+      console.log('data in constructQueue', data)
+      for (const album of data) {
+        if (album.artistName === artist) {
+          const newQueue: Queue = [];
+          const image_src = album.albumCover;
+          const artist = album.artistName;
+          album.tracks.forEach((track) => {
+            newQueue.push({
+              title: track.title,
+              preview: track.preview,
+              image_src: image_src,
+              artist: artist,
+            });
+          });
+          resolve(newQueue);
+        }
+      }
     }
     resolve([]);
   });
