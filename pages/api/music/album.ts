@@ -52,7 +52,7 @@ export default async function handler(
         currentAlbumName = albumName;
         currentArtistName = artistName;
 
-        if (albumData.length === 5) break; // break out of loop
+        if (albumData.length === 10) break; // break out of loop
 
         const albumCover = album.album.cover_medium;
 
